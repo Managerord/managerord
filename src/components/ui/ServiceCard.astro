@@ -4,9 +4,10 @@ import ArrowButton from "./ArrowButton.astro";
 
 interface Props {
 	service: Service;
+	href?: string;
 }
 
-const { service } = Astro.props;
+const { service, href = "#" } = Astro.props;
 ---
 
 <div
@@ -27,5 +28,5 @@ const { service } = Astro.props;
 			{service.description}
 		</p>
 	</div>
-	<ArrowButton class="mt-8 self-end" label={service.title} />
+	<ArrowButton href={href} class="mt-8 self-end" label={service.title} />
 </div>

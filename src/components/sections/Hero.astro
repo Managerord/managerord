@@ -1,6 +1,13 @@
 ---
 import ArrowRight from "@/assets/icons/arrow-right.svg";
 import Button from "@/components/ui/Button.astro";
+import { type Locale, talkPath, ui } from "@/i18n/content";
+
+interface Props {
+	locale?: Locale;
+}
+const { locale = "es" } = Astro.props;
+const copy = ui[locale].hero;
 ---
 
 <section class="overflow-hidden bg-warm-white px-2 sm:px-6 lg:px-8 2xl:px-14">
@@ -9,7 +16,7 @@ import Button from "@/components/ui/Button.astro";
 	>
 		<img
 			src="/images/01-hero-managero.avif"
-			alt="Collage de proyectos y mockups de marca de Managero"
+			alt={copy.alt}
 			class="absolute inset-0 h-full w-full object-cover object-[62%_center] sm:object-center"
 			loading="eager"
 		/>
@@ -23,15 +30,15 @@ import Button from "@/components/ui/Button.astro";
 			<h1
 				class="font-heading text-[clamp(1.75rem,8vw,2.25rem)] font-extrabold leading-[1.02] tracking-[-0.02em] text-black/80 sm:text-6xl lg:text-[4.8rem] 2xl:text-8xl"
 			>	
-				Convertimos ideas en experiencias digitales.
+				{copy.title}
 			</h1>
 			<p class="mt-4 max-w-[260px] text-sm leading-[1.4] font-normal text-muted sm:mt-6 sm:max-w-md sm:text-xl lg:mt-5 lg:max-w-sm 2xl:mt-6 2xl:max-w-md 2xl:text-2xl">
-				Diseño, estrategia y tecnología para marcas que quieren crecer.
+				{copy.description}
 			</p>
 			<div class="mt-4 flex flex-col gap-4 sm:mt-8 sm:flex-row lg:mt-6 2xl:mt-8">
 				<Button
 					class="w-fit bg-orange-500 px-4 py-2.5 text-xs text-white hover:bg-orange-600 flex items-center gap-x-2 uppercase sm:px-6 sm:py-3 sm:text-base sm:gap-x-5 lg:px-5 lg:py-2.5 lg:gap-x-4 2xl:px-6 2xl:py-3 2xl:text-lg 2xl:gap-x-5"
-					href="#contacto">Iniciar proyecto
+					href={talkPath(locale)}>{copy.cta}
 						<span class="flex items-center justify-center rounded-full bg-[#f97c07] p-1.5 sm:p-2.5 lg:p-2 2xl:p-2.5">
 							<ArrowRight class="text-white size-3 sm:size-5 lg:size-4 2xl:size-5" />
 					</span>

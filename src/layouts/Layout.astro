@@ -1,23 +1,77 @@
 ---
 import "@/styles/global.css";
+import type { Locale } from "@/i18n/content";
 
 interface Props {
 	title?: string;
 	description?: string;
+	locale?: Locale;
+	canonicalPath?: string;
+	alternatePath?: string;
+	image?: string;
+	schema?: Record<string, unknown> | Record<string, unknown>[];
 }
 
-const { title = "Managero", description = "Creatividad con estructura." } =
-	Astro.props;
+const {
+	title = "Managero",
+	description = "Creatividad con estructura.",
+	locale = "es",
+	canonicalPath = Astro.url.pathname,
+	alternatePath,
+	image = "/images/01-hero-managero.avif",
+	schema,
+} = Astro.props;
+const canonical = new URL(canonicalPath, Astro.site);
+const alternateLocale = locale === "es" ? "en" : "es";
+const socialImage = new URL(image, Astro.site);
+const organizationSchema = {
+	"@context": "https://schema.org",
+	"@type": "Organization",
+	name: "Managero",
+	url: new URL(`/${locale}/`, Astro.site).href,
+	logo: new URL("/images/logo.png", Astro.site).href,
+	email: "marias@managerord.com",
+	telephone: "+1-809-719-1911",
+	address: {
+		"@type": "PostalAddress",
+		addressLocality: "Santo Domingo",
+		addressCountry: "DO",
+	},
+	sameAs: [
+		"https://www.instagram.com/managerord",
+		"https://www.facebook.com/managerord",
+		"https://www.linkedin.com/company/managero-rd",
+	],
+};
 ---
 
 <!doctype html>
-<html lang="es">
+<html lang={locale}>
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="description" content={description} />
+		<meta name="robots" content="index, follow, max-image-preview:large" />
+		<link rel="canonical" href={canonical} />
+		<link rel="alternate" hreflang={locale} href={canonical} />
+		{alternatePath && <link rel="alternate" hreflang={alternateLocale} href={new URL(alternatePath, Astro.site)} />}
+		{alternatePath && <link rel="alternate" hreflang="x-default" href={new URL(locale === "es" ? canonicalPath : alternatePath, Astro.site)} />}
+		<link rel="sitemap" href="/sitemap-index.xml" />
+		<meta property="og:type" content="website" />
+		<meta property="og:site_name" content="Managero" />
+		<meta property="og:locale" content={locale === "es" ? "es_DO" : "en_US"} />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:url" content={canonical} />
+		<meta property="og:image" content={socialImage} />
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
+		<meta name="twitter:image" content={socialImage} />
 		<title>{title}</title>
+		<script is:inline type="application/ld+json" set:html={JSON.stringify(organizationSchema)} />
+		{schema && <script is:inline type="application/ld+json" set:html={JSON.stringify(schema)} />}
 		<link
 			rel="preload"
 			href="/fonts/nordeco-light.woff2"

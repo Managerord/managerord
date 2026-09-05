@@ -1,7 +1,14 @@
 ---
 import ProcessPath from "@/assets/icons/process-path.svg";
 import ProcessStep from "@/components/ui/ProcessStep.astro";
-import { processSteps } from "@/data/process";
+import { getProcessSteps } from "@/data/process";
+import { type Locale, ui } from "@/i18n/content";
+
+interface Props {
+	locale?: Locale;
+}
+const { locale = "es" } = Astro.props;
+const processSteps = getProcessSteps(locale);
 ---
 
 <section
@@ -13,7 +20,7 @@ import { processSteps } from "@/data/process";
 	>
 		<ProcessPath class="absolute inset-0 size-full opacity-75" aria-hidden="true" />
 		<div class="relative z-1">
-			<h2 id="process-title" class="font-heading text-3xl leading-none font-bold sm:text-5xl 2xl:text-6xl">Así trabajamos</h2>
+			<h2 id="process-title" class="font-heading text-3xl leading-none font-bold sm:text-5xl 2xl:text-6xl">{ui[locale].processTitle}</h2>
 
 			<div class="mt-5 grid grid-cols-4 gap-4.5 lg:mt-4 lg:gap-3.5 2xl:mt-5 2xl:gap-4.5 max-lg:grid-cols-2 max-sm:mt-4.5 max-sm:grid-cols-1 max-sm:gap-2.5">
 				{processSteps.map((step, index) => (

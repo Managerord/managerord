@@ -3,16 +3,22 @@ import type { ExtraService } from "@/data/extraServices";
 import ArrowButton from "./ArrowButton.astro";
 
 interface Props {
-	service: ExtraService;
+	service: ExtraService & {
+		title: string;
+		description: string;
+		cardImage: string;
+		href: string;
+	};
+	label?: string;
 }
 
-const { service } = Astro.props;
+const { service, label = "Conocer el servicio" } = Astro.props;
 ---
 
 <div class="flex flex-col items-stretch overflow-hidden rounded-3xl bg-cream-100 lg:rounded-[20px] xl:h-60 xl:flex-row 2xl:h-75 2xl:rounded-3xl">
 	<div class="aspect-video w-full shrink-0 xl:aspect-auto xl:w-2/5">
 		<img
-			src={service.image}
+			src={service.cardImage}
 			alt={service.title}
 			class="h-full w-full object-cover" />
 	</div>
@@ -22,6 +28,6 @@ const { service } = Astro.props;
 			<p class="text-xl font-semibold text-charcoal sm:text-2xl lg:text-xl 2xl:text-2xl">{service.title}</p>
 			<p class="mt-2 text-base leading-relaxed font-normal text-muted sm:text-lg lg:text-base 2xl:text-lg">{service.description}</p>
 		</div>
-		<ArrowButton variant="solid" class="self-end" label={service.title} />
+		<ArrowButton href={service.href} variant="solid" class="self-end" label={`${label}: ${service.title}`} />
 	</div>
 </div>

@@ -5,39 +5,138 @@ import Monitor from "@/assets/icons/monitor.svg";
 import Share2 from "@/assets/icons/share-2.svg";
 import Smartphone from "@/assets/icons/smartphone.svg";
 import SectionHeading from "@/components/ui/SectionHeading.astro";
+import { type Locale, ui } from "@/i18n/content";
 
+interface Props {
+	locale?: Locale;
+}
+const { locale = "es" } = Astro.props;
+const copy = ui[locale].universe;
 const services = [
-	{ icon: Share2, label: "Branding", class: "rounded-tr-none" },
-	{ icon: Monitor, label: "Diseño Web" },
-	{ icon: MessageCircle, label: "Redes Sociales" },
-	{ icon: Smartphone, label: "Aplicaciones", class: "rounded-tl-none" },
+	{ icon: Share2, key: "branding", label: copy.categories[0] },
+	{ icon: Monitor, key: "web", label: copy.categories[1] },
+	{ icon: MessageCircle, key: "social", label: copy.categories[2] },
+	{ icon: Smartphone, key: "apps", label: copy.categories[3] },
+];
+const work = [
+	{
+		category: "branding",
+		title: "Innovative",
+		image: "/images/mockups/gorra_y_taza_innovative.avif",
+	},
+	{
+		category: "branding",
+		title: "Maps for Mom & El Elyon",
+		image: "/images/mockups/botellas_marcas.avif",
+	},
+	{
+		category: "branding",
+		title: locale === "es" ? "Portafolio de marcas" : "Brand portfolio",
+		image: "/images/mockups/bolsas_y_gorra_marcas.avif",
+	},
+	{
+		category: "web",
+		title: "Condo Hub",
+		image: "/images/mockups/laptop_flotante_condo_hub.avif",
+	},
+	{
+		category: "web",
+		title: locale === "es" ? "Plataformas digitales" : "Digital platforms",
+		image: "/images/mockups/laptop_y_movil_plataformas.avif",
+	},
+	{
+		category: "web",
+		title:
+			locale === "es" ? "Experiencias responsivas" : "Responsive experiences",
+		image: "/images/03-diseno-web.avif",
+	},
+	{
+		category: "social",
+		title: locale === "es" ? "Contenido de marca" : "Branded content",
+		image: "/images/14-mosaico-redes.avif",
+	},
+	{
+		category: "social",
+		title: locale === "es" ? "Campañas digitales" : "Digital campaigns",
+		image: "/images/04-contenido-digital.avif",
+	},
+	{
+		category: "social",
+		title: locale === "es" ? "Piezas para redes" : "Social media assets",
+		image: "/images/mockups/textiles_y_taza_marcas.avif",
+	},
+	{
+		category: "apps",
+		title:
+			locale === "es" ? "Aplicación de reciclaje" : "Recycling application",
+		image: "/images/mockups/pantallas_aplicacion_reciclaje.avif",
+	},
+	{
+		category: "apps",
+		title:
+			locale === "es" ? "Productos multiplataforma" : "Cross-platform products",
+		image: "/images/05-apps-sistemas.avif",
+	},
+	{
+		category: "apps",
+		title: locale === "es" ? "Interfaces digitales" : "Digital interfaces",
+		image: "/images/11-mosaico-pantallas.avif",
+	},
 ];
 ---
 
 <section class="px-4 pt-14 sm:px-6 sm:pt-20 lg:px-8 lg:pt-22 2xl:px-14 2xl:pt-28">
 	<div class="mx-auto w-full max-w-425">
-		<SectionHeading
-			title="Todo lo que tu marca necesita, en un solo lugar"
-			description="Desde la estrategia hasta la ejecución, construimos un sistema de marca coherente en cada punto de contacto."
-			class="mx-auto text-center"
-		/>
+		<SectionHeading title={copy.title} description={copy.description} class="mx-auto text-center" />
 
-		<div class="flex w-full items-stretch gap-2 overflow-x-auto py-10 sm:gap-3 lg:gap-4 lg:overflow-visible lg:py-13 xl:gap-5 2xl:gap-6 2xl:py-16">
-			{services.slice(0, 2).map(({ icon: Icon, label, class: itemClass }) => (
-				<div class:list={["flex min-w-40 shrink-0 items-center justify-center gap-2 rounded-full bg-cream-100 px-4 py-4 lg:min-w-0 lg:flex-1 lg:px-5 lg:py-5.5 2xl:px-6 2xl:py-7", itemClass]}>
-					<Icon class="size-5 shrink-0 text-black lg:size-4 2xl:size-5" />
-					<span class="text-black font-medium text-sm lg:text-base 2xl:text-xl">{label}</span>
-				</div>
+		<div class="grid grid-cols-2 gap-2 py-10 sm:gap-3 lg:flex lg:items-stretch lg:gap-4 lg:py-13 xl:gap-5 2xl:gap-6 2xl:py-16" role="group" aria-label={copy.filterLabel} data-brand-filters>
+			{services.map(({ icon: Icon, key, label }, index) => (
+				<button
+					type="button"
+					data-brand-filter={key}
+					aria-pressed="false"
+					class:list={[
+						"flex cursor-pointer items-center justify-center gap-2 rounded-full bg-cream-100 px-4 py-4 transition-colors hover:bg-[#eee5d9] aria-pressed:bg-charcoal aria-pressed:text-white lg:min-w-0 lg:flex-1 lg:px-5 lg:py-5.5 2xl:px-6 2xl:py-7",
+						index === 2 && "lg:order-4",
+						index === 3 && "lg:order-5",
+					]}
+				>
+					<Icon class="size-5 shrink-0 lg:size-4 2xl:size-5" aria-hidden="true" />
+					<span class="font-medium text-sm lg:text-base 2xl:text-xl">{label}</span>
+				</button>
 			))}
-			<div class="flex w-20 shrink-0 items-center justify-center rounded-t-lg bg-orange-500 px-5 py-3 lg:w-24 lg:px-4 lg:py-3 xl:w-35 2xl:w-44 2xl:px-5 2xl:py-4">
-				<ArrowRight class="text-white size-8 lg:size-13 2xl:size-16" />
-			</div>
-			{services.slice(2).map(({ icon: Icon, label, class: itemClass }) => (
-				<div class:list={["flex min-w-40 shrink-0 items-center justify-center gap-2 rounded-full bg-cream-100 px-4 py-4 lg:min-w-0 lg:flex-1 lg:px-5 lg:py-5.5 2xl:px-6 2xl:py-7", itemClass]}>
-					<Icon class="size-5 shrink-0 text-black lg:size-4 2xl:size-5" />
-					<span class="text-black font-medium text-sm lg:text-base 2xl:text-xl">{label}</span>
-				</div>
+			<button type="button" data-brand-reset aria-label={copy.close} class="col-span-2 flex w-full cursor-pointer items-center justify-center rounded-full bg-orange-500 px-5 py-4 transition-colors hover:bg-orange-600 lg:order-3 lg:w-24 lg:shrink-0 lg:rounded-t-lg lg:px-4 lg:py-3 xl:w-35 2xl:w-44 2xl:px-5 2xl:py-4">
+				<ArrowRight class="size-6 text-white lg:size-13 2xl:size-16" aria-hidden="true" />
+			</button>
+		</div>
+
+		<div data-brand-results hidden aria-live="polite" aria-label={copy.resultsLabel} class="grid grid-cols-1 gap-3 pb-12 sm:grid-cols-3 lg:pb-18">
+			{work.map((item) => (
+				<article data-brand-item={item.category} hidden class="group overflow-hidden rounded-3xl bg-cream-100">
+					<img src={item.image} alt={item.title} width="600" height="420" loading="lazy" class="aspect-4/3 w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]" />
+					<h3 class="p-5 font-heading text-xl font-semibold">{item.title}</h3>
+				</article>
 			))}
 		</div>
 	</div>
 </section>
+
+<script>
+	document.querySelectorAll<HTMLElement>("[data-brand-filters]").forEach((filters) => {
+		const results = filters.parentElement?.querySelector<HTMLElement>("[data-brand-results]");
+		const buttons = Array.from(filters.querySelectorAll<HTMLButtonElement>("[data-brand-filter]"));
+		const items = Array.from(results?.querySelectorAll<HTMLElement>("[data-brand-item]") ?? []);
+		if (!results) return;
+
+		const select = (category?: string) => {
+			results.hidden = !category;
+			buttons.forEach((button) => button.setAttribute("aria-pressed", String(button.dataset.brandFilter === category)));
+			items.forEach((item) => { item.hidden = item.dataset.brandItem !== category; });
+		};
+
+		buttons.forEach((button) => button.addEventListener("click", () => {
+			select(button.getAttribute("aria-pressed") === "true" ? undefined : button.dataset.brandFilter);
+		}));
+		filters.querySelector("[data-brand-reset]")?.addEventListener("click", () => select());
+	});
+</script>

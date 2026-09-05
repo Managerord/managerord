@@ -1,15 +1,23 @@
 ---
 import ProjectCarousel from "@/components/ui/ProjectCarousel.astro";
 import SectionHeading from "@/components/ui/SectionHeading.astro";
-import { projects } from "@/data/projects";
+import { getProjects } from "@/data/projects";
+import { type Locale, ui } from "@/i18n/content";
+
+interface Props {
+	locale?: Locale;
+}
+const { locale = "es" } = Astro.props;
+const copy = ui[locale].projects;
+const projects = getProjects(locale);
 ---
 
-<section id="proyectos" class="bg-cream-100 px-4 py-12 sm:px-6 sm:py-20 lg:px-8 lg:py-22 2xl:px-14 2xl:py-28">
+<section id={locale === "es" ? "proyectos" : "projects"} class="bg-cream-100 px-4 py-12 sm:px-6 sm:py-20 lg:px-8 lg:py-22 2xl:px-14 2xl:py-28">
 	<div class="mx-auto w-full max-w-425">
 		<SectionHeading
-			title="Proyectos con intención"
-			description="Marcas que confiaron en nosotros para dar el siguiente paso."
+			title={copy.title}
+			description={copy.description}
 		/>
-		<ProjectCarousel projects={projects} />
+		<ProjectCarousel projects={projects} previousLabel={copy.previous} nextLabel={copy.next} goToLabel={copy.goTo} />
 	</div>
 </section>

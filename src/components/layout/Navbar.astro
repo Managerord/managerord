@@ -3,75 +3,167 @@ import { Image } from "astro:assets";
 import Menu from "@/assets/icons/menu.svg";
 import X from "@/assets/icons/x.svg";
 import Button from "@/components/ui/Button.astro";
-import { headerLinks } from "@/data/nav";
+import { type Locale, localePath, talkPath, ui } from "@/i18n/content";
+
+interface Props {
+	locale?: Locale;
+	alternatePath?: string;
+}
+
+const {
+	locale = "es",
+	alternatePath = localePath(locale === "es" ? "en" : "es"),
+} = Astro.props;
+const copy = ui[locale].nav;
+const home = localePath(locale);
+const links = copy.links.map((link) => ({
+	...link,
+	href: `${home}#${link.hash}`,
+}));
+const currentPath = Astro.url.pathname;
+const esHref = locale === "es" ? currentPath : alternatePath;
+const enHref = locale === "en" ? currentPath : alternatePath;
 ---
 
 <div class="h-[66px] sm:h-[82px] lg:h-[82px] 2xl:h-[98px]" aria-hidden="true"></div>
 <header id="main-header" class="fixed inset-x-0 top-0 z-40 bg-warm-white/80 backdrop-blur">
 	<div class="mx-auto grid w-full grid-cols-[1fr_auto_1fr] items-center px-2 py-2 sm:px-6 sm:py-3 lg:px-16 lg:py-3 2xl:px-20 2xl:py-4">
-		<div class="justify-self-start">
+		<a href={home} class="justify-self-start" aria-label={copy.backHome}>
 			<Image src="/images/logo.png" alt="Managero" width="1563" height="423" class="h-auto w-[105px] sm:w-[160px] lg:w-[200px] 2xl:w-[250px]" />
-		</div>
+		</a>
 
-		<nav class="hidden items-center gap-6 lg:flex 2xl:gap-8" aria-label="Navegación principal">
-			{headerLinks.map((link) => (
+		<nav class="hidden items-center gap-6 lg:flex 2xl:gap-8" aria-label={copy.mainLabel}>
+			{links.map((link) => (
 				<a href={link.href} class="font-heading text-base font-medium text-muted transition-colors hover:text-charcoal 2xl:text-xl">
 					{link.label}
 				</a>
 			))}
 		</nav>
 
-		<div class="hidden justify-self-end lg:block">
-			<Button class="bg-orange-500 px-5 py-2.5 text-base text-white hover:bg-orange-600 2xl:px-6 2xl:py-3 2xl:text-lg" href="#contacto">Hablemos</Button>
+		<div class="hidden items-center gap-3 justify-self-end lg:flex">
+			<select
+				aria-label={copy.language}
+				class="cursor-pointer rounded-full border border-border bg-transparent px-3 py-1.5 font-heading text-sm font-semibold text-muted transition-colors hover:text-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-500 2xl:text-base"
+				data-lang-select
+			>
+				<option value={esHref} selected={locale === "es"}>Español</option>
+				<option value={enHref} selected={locale === "en"}>English</option>
+			</select>
+			<Button class="bg-orange-500 px-5 py-2.5 text-base text-white hover:bg-orange-600 2xl:px-6 2xl:py-3 2xl:text-lg" href={talkPath(locale)}>{copy.talk}</Button>
 		</div>
 
 		<button
 			type="button"
-			class="col-start-3 flex h-11 w-11 items-center justify-self-end rounded-full border border-border lg:hidden"
-			aria-label="Abrir menú"
+			class="relative col-start-3 flex h-11 w-11 items-center justify-center justify-self-end rounded-full border border-border lg:hidden"
+			aria-label={copy.open}
+			aria-expanded="false"
 			data-mobile-menu-toggle
 		>
-			<Menu width="18" height="18" />
+			<Menu id="mobile-menu-icon" width="18" height="18" class="absolute transition-all duration-300" />
+			<X id="mobile-close-icon" width="18" height="18" class="absolute scale-0 opacity-0 transition-all duration-300" />
 		</button>
 	</div>
 </header>
 
-<div id="mobile-menu" class="fixed inset-0 z-50 hidden min-h-dvh flex-col overflow-y-auto bg-warm-white p-6 max-[360px]:p-4 lg:hidden" data-mobile-menu>
+<div id="mobile-menu" class="invisible fixed inset-0 z-50 flex min-h-dvh -translate-y-full flex-col overflow-y-auto bg-warm-white p-6 opacity-0 transition-all duration-500 ease-in-out max-[360px]:p-4 lg:hidden" data-mobile-menu>
 	<div class="flex items-center justify-between">
-		<a href="/" class="text-lg font-bold tracking-tight text-charcoal">Managero</a>
+		<a href={home} aria-label={copy.backHome}>
+			<Image src="/images/logo.png" alt="Managero" width="1563" height="423" class="h-8 w-auto" />
+		</a>
 		<button
 			type="button"
 			class="flex h-11 w-11 items-center justify-center rounded-full border border-border"
-			aria-label="Cerrar menú"
+			aria-label={copy.close}
 			data-mobile-menu-close
 		>
 			<X width="18" height="18" />
 		</button>
 	</div>
 
-	<nav class="mt-12 flex flex-col gap-6" aria-label="Navegación móvil">
-		{headerLinks.map((link) => (
-			<a href={link.href} class="text-2xl font-semibold text-charcoal" data-mobile-menu-link>
+	<nav class="mt-12 flex flex-col gap-6" aria-label={copy.mobileLabel}>
+		{links.map((link) => (
+			<a href={link.href} class="mobile-nav-link text-2xl font-semibold text-charcoal" data-mobile-menu-link>
 				{link.label}
 			</a>
 		))}
 	</nav>
 
-	<Button href="#contacto" class="mt-auto w-full">Hablemos</Button>
+	<select
+		aria-label={copy.language}
+		class="mt-auto mb-4 cursor-pointer rounded-full border border-border bg-transparent px-3 py-2 text-center font-heading text-base font-semibold text-muted focus:outline-none focus:ring-2 focus:ring-orange-500"
+		data-lang-select
+	>
+		<option value={esHref} selected={locale === "es"}>Español</option>
+		<option value={enHref} selected={locale === "en"}>English</option>
+	</select>
+	<Button href={talkPath(locale)} class="w-full">{copy.talk}</Button>
 </div>
 
+<style>
+	.mobile-nav-link {
+		opacity: 0;
+		transform: translateY(20px);
+		transition:
+			opacity 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+			transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+	}
+
+	.mobile-nav-link--visible {
+		opacity: 1;
+		transform: translateY(0);
+	}
+</style>
+
 <script>
-	const toggle = document.querySelector("[data-mobile-menu-toggle]");
+	const toggle = document.querySelector<HTMLButtonElement>("[data-mobile-menu-toggle]");
 	const close = document.querySelector("[data-mobile-menu-close]");
-	const menu = document.querySelector("[data-mobile-menu]");
-	const links = document.querySelectorAll("[data-mobile-menu-link]");
+	const menu = document.querySelector<HTMLElement>("[data-mobile-menu]");
+	const links = document.querySelectorAll<HTMLElement>("[data-mobile-menu-link]");
+	const menuIcon = document.querySelector("#mobile-menu-icon");
+	const closeIcon = document.querySelector("#mobile-close-icon");
 
-	const open = () => menu?.classList.remove("hidden");
-	const hide = () => menu?.classList.add("hidden");
+	let isOpen = false;
 
-	toggle?.addEventListener("click", open);
+	const open = () => {
+		isOpen = true;
+		menu?.classList.remove("-translate-y-full", "opacity-0", "invisible");
+		menu?.classList.add("translate-y-0", "opacity-100", "visible");
+
+		menuIcon?.classList.add("scale-0", "opacity-0");
+		closeIcon?.classList.remove("scale-0", "opacity-0");
+
+		toggle?.setAttribute("aria-expanded", "true");
+		document.body.style.overflow = "hidden";
+
+		links.forEach((link, index) => {
+			setTimeout(() => link.classList.add("mobile-nav-link--visible"), 200 + index * 80);
+		});
+	};
+
+	const hide = () => {
+		isOpen = false;
+		menu?.classList.add("-translate-y-full", "opacity-0", "invisible");
+		menu?.classList.remove("translate-y-0", "opacity-100", "visible");
+
+		menuIcon?.classList.remove("scale-0", "opacity-0");
+		closeIcon?.classList.add("scale-0", "opacity-0");
+
+		toggle?.setAttribute("aria-expanded", "false");
+		document.body.style.overflow = "";
+
+		links.forEach((link) => link.classList.remove("mobile-nav-link--visible"));
+	};
+
+	toggle?.addEventListener("click", () => (isOpen ? hide() : open()));
 	close?.addEventListener("click", hide);
-	links.forEach((link) => link.addEventListener("click", hide));
+	links.forEach((link) => link.addEventListener("click", () => setTimeout(hide, 150)));
+	document.addEventListener("keydown", (event) => event.key === "Escape" && isOpen && hide());
+
+	document.querySelectorAll<HTMLSelectElement>("[data-lang-select]").forEach((select) => {
+		select.addEventListener("change", () => {
+			window.location.href = select.value;
+		});
+	});
 </script>
 
 <script>

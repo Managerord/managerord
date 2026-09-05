@@ -1,18 +1,26 @@
 ---
 import SectionHeading from "@/components/ui/SectionHeading.astro";
 import ServiceCard from "@/components/ui/ServiceCard.astro";
-import { services } from "@/data/services";
+import { getServices } from "@/data/services";
+import { type Locale, talkPath, ui } from "@/i18n/content";
+
+interface Props {
+	locale?: Locale;
+}
+const { locale = "es" } = Astro.props;
+const copy = ui[locale].services;
+const services = getServices(locale);
 ---
 
-<section id="servicios" class="bg-warm-white px-4 pb-16 sm:px-6 sm:pb-20 lg:px-8 lg:pb-22 2xl:px-14 2xl:pb-28">
+<section id={locale === "es" ? "servicios" : "services"} class="bg-warm-white px-4 pb-16 sm:px-6 sm:pb-20 lg:px-8 lg:pb-22 2xl:px-14 2xl:pb-28">
 	<div class="mx-auto w-full max-w-425">
 		<SectionHeading
-			title="Creamos soluciones que funcionan"
-			description="Un equipo multidisciplinario que combina estrategia, diseño y tecnología."
+			title={copy.title}
+			description={copy.description}
 		/>
 		<div class="mt-8 grid gap-4 sm:mt-12 sm:grid-cols-2 lg:mt-10 xl:grid-cols-4 2xl:mt-12">
-			{services.map((service) => (
-				<ServiceCard service={service} />
+			{services.map((service, index) => (
+				<ServiceCard service={service} href={`${talkPath(locale)}?service=${["branding", "web", "development", "marketing"][index]}`} />
 			))}
 		</div>
 	</div>

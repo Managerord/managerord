@@ -5,9 +5,17 @@ import type { Project } from "@/data/projects";
 
 interface Props {
 	projects: Project[];
+	previousLabel?: string;
+	nextLabel?: string;
+	goToLabel?: string;
 }
 
-const { projects } = Astro.props;
+const {
+	projects,
+	previousLabel = "Proyecto anterior",
+	nextLabel = "Proyecto siguiente",
+	goToLabel = "Ir a",
+} = Astro.props;
 ---
 
 <div class="mt-8 sm:mt-12 lg:mt-10 2xl:mt-12" data-carousel>
@@ -32,7 +40,7 @@ const { projects } = Astro.props;
 		<div class="pointer-events-none absolute inset-0 flex items-center justify-between z-20">
 			<button
 				type="button"
-				aria-label="Proyecto anterior"
+				aria-label={previousLabel}
 				class="pointer-events-auto flex size-12 shrink-0 cursor-pointer items-center justify-center rounded-full bg-white text-orange-500 shadow-soft hover:shadow-hover sm:size-16 lg:size-20 2xl:size-24"
 				data-carousel-prev
 			>
@@ -40,7 +48,7 @@ const { projects } = Astro.props;
 			</button>
 			<button
 				type="button"
-				aria-label="Proyecto siguiente"
+				aria-label={nextLabel}
 				class="pointer-events-auto flex size-12 shrink-0 cursor-pointer items-center justify-center rounded-full bg-white text-orange-500 shadow-soft hover:shadow-hover sm:size-16 lg:size-20 2xl:size-24"
 				data-carousel-next
 			>
@@ -52,7 +60,7 @@ const { projects } = Astro.props;
 			{projects.map((project, index) => (
 				<button
 					type="button"
-					aria-label={`Ir a ${project.title}`}
+					aria-label={`${goToLabel} ${project.title}`}
 					aria-current={index === 0}
 					class="pointer-events-auto h-2 w-2 rounded-full bg-white/60 transition-all aria-current:w-6 aria-current:bg-orange-500"
 					data-carousel-dot
