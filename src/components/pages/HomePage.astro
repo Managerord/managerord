@@ -1,0 +1,42 @@
+---
+import Footer from "@/components/layout/Footer.astro";
+import Navbar from "@/components/layout/Navbar.astro";
+import About from "@/components/sections/About.astro";
+import BrandUniverse from "@/components/sections/BrandUniverse.astro";
+import Contact from "@/components/sections/Contact.astro";
+import ExtraServices from "@/components/sections/ExtraServices.astro";
+import Hero from "@/components/sections/Hero.astro";
+import Process from "@/components/sections/Process.astro";
+import Projects from "@/components/sections/Projects.astro";
+import Services from "@/components/sections/Services.astro";
+import { type Locale, localePath, ui } from "@/i18n/content";
+import Layout from "@/layouts/Layout.astro";
+
+interface Props {
+	locale: Locale;
+}
+const { locale } = Astro.props;
+const copy = ui[locale];
+const alternateLocale = locale === "es" ? "en" : "es";
+---
+
+<Layout
+	locale={locale}
+	title={copy.seo.homeTitle}
+	description={copy.seo.homeDescription}
+	canonicalPath={localePath(locale)}
+	alternatePath={localePath(alternateLocale)}
+>
+	<Navbar locale={locale} alternatePath={localePath(alternateLocale)} />
+	<main>
+		<Hero locale={locale} />
+		<BrandUniverse locale={locale} />
+		<Services locale={locale} />
+		<Projects locale={locale} />
+		<ExtraServices locale={locale} />
+		<Process locale={locale} />
+		<About locale={locale} />
+		<Contact locale={locale} />
+	</main>
+	<Footer locale={locale} />
+</Layout>

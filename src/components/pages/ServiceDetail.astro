@@ -1,0 +1,114 @@
+---
+import ChevronRight from "@/assets/icons/chevron-right.svg";
+import Footer from "@/components/layout/Footer.astro";
+import Navbar from "@/components/layout/Navbar.astro";
+import Button from "@/components/ui/Button.astro";
+import type { ExtraService } from "@/data/extraServices";
+import { type Locale, localePath, talkPath, ui } from "@/i18n/content";
+import Layout from "@/layouts/Layout.astro";
+
+interface Props {
+	locale: Locale;
+	service: ExtraService & {
+		slug: string;
+		title: string;
+		description: string;
+		seoDescription: string;
+		intro: string;
+		capabilities: string[];
+		imageAlt: string;
+		href: string;
+	};
+	alternatePath: string;
+}
+const { locale, service, alternatePath } = Astro.props;
+const copy = ui[locale].servicePage;
+const contactHref = `${talkPath(locale)}?service=${service.id}`;
+const schema = [
+	{
+		"@context": "https://schema.org",
+		"@type": "Service",
+		name: service.title,
+		description: service.seoDescription,
+		provider: {
+			"@type": "Organization",
+			name: "Managero",
+			url: new URL(localePath(locale), Astro.site).href,
+		},
+		areaServed: "Worldwide",
+		url: new URL(service.href, Astro.site).href,
+	},
+	{
+		"@context": "https://schema.org",
+		"@type": "BreadcrumbList",
+		itemListElement: [
+			{
+				"@type": "ListItem",
+				position: 1,
+				name: ui[locale].nav.home,
+				item: new URL(localePath(locale), Astro.site).href,
+			},
+			{
+				"@type": "ListItem",
+				position: 2,
+				name: copy.back,
+				item: new URL(
+					`${localePath(locale)}#${locale === "es" ? "servicios" : "services"}`,
+					Astro.site,
+				).href,
+			},
+			{
+				"@type": "ListItem",
+				position: 3,
+				name: service.title,
+				item: new URL(service.href, Astro.site).href,
+			},
+		],
+	},
+];
+---
+
+<Layout locale={locale} title={`${service.title} | Managero`} description={service.seoDescription} canonicalPath={service.href} alternatePath={alternatePath} image={service.image} schema={schema}>
+	<Navbar locale={locale} alternatePath={alternatePath} />
+	<main>
+		<section class="px-2 pb-12 sm:px-6 sm:pb-20 lg:px-8 2xl:px-14">
+			<div class="mx-auto grid max-w-425 overflow-hidden rounded-3xl bg-cream-100 lg:grid-cols-[0.9fr_1.1fr] 2xl:rounded-4xl">
+				<div class="flex flex-col justify-center p-7 sm:p-12 lg:p-14 2xl:p-20">
+					<nav class="flex items-center gap-2 text-sm text-muted" aria-label="Breadcrumb">
+						<a href={localePath(locale)}>{ui[locale].nav.home}</a><ChevronRight class="size-3" aria-hidden="true" /><span>{service.title}</span>
+					</nav>
+					<p class="mt-10 font-heading text-sm font-semibold tracking-[0.18em] text-orange-500 uppercase">{copy.eyebrow}</p>
+					<h1 class="mt-4 font-heading text-4xl leading-none font-bold tracking-[-0.035em] sm:text-6xl 2xl:text-7xl">{service.title}</h1>
+					<p class="mt-6 text-lg leading-relaxed text-muted sm:text-xl">{service.description}</p>
+					<Button href={contactHref} class="mt-8 w-fit bg-orange-500 text-white hover:bg-orange-600">{copy.cta}</Button>
+				</div>
+				<img src={service.image} alt={service.imageAlt} width="1500" height="1000" class="h-full min-h-85 w-full object-cover sm:min-h-120" />
+			</div>
+		</section>
+
+		<section class="px-4 py-12 sm:px-6 sm:py-20 lg:px-8 2xl:px-14 2xl:py-28">
+			<div class="mx-auto grid max-w-425 gap-10 lg:grid-cols-[0.75fr_1fr] lg:gap-20">
+				<div>
+					<p class="font-heading text-sm font-semibold tracking-[0.18em] text-orange-500 uppercase">{copy.helpTitle}</p>
+					<h2 class="mt-5 font-heading text-3xl leading-tight font-bold sm:text-5xl">{service.intro}</h2>
+				</div>
+				<div>
+					<h2 class="font-heading text-2xl font-bold sm:text-3xl">{copy.includedTitle}</h2>
+					<ul class="mt-7 grid gap-3">
+						{service.capabilities.map((capability, index) => (
+							<li class="flex items-center gap-4 rounded-2xl bg-cream-100 p-5 text-lg"><span class="font-heading text-sm font-bold text-orange-500">0{index + 1}</span>{capability}</li>
+						))}
+					</ul>
+				</div>
+			</div>
+		</section>
+
+		<section class="px-4 pb-14 sm:px-6 sm:pb-20 lg:px-8 2xl:px-14 2xl:pb-28">
+			<div class="mx-auto flex max-w-425 flex-col items-start justify-between gap-8 rounded-3xl bg-charcoal p-8 text-white sm:p-12 lg:flex-row lg:items-end 2xl:p-16">
+				<div><h2 class="max-w-200 font-heading text-3xl leading-tight font-bold sm:text-5xl">{copy.ctaTitle}</h2><p class="mt-4 max-w-180 text-lg text-white/65">{copy.ctaDescription}</p></div>
+				<Button href={contactHref} class="shrink-0 bg-orange-500 text-white hover:bg-orange-600">{copy.cta}</Button>
+			</div>
+		</section>
+	</main>
+	<Footer locale={locale} />
+</Layout>

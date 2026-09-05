@@ -1,0 +1,74 @@
+---
+import Footer from "@/components/layout/Footer.astro";
+import Navbar from "@/components/layout/Navbar.astro";
+import ContactForm from "@/components/ui/ContactForm.astro";
+import SocialLinks from "@/components/ui/SocialLinks.astro";
+import { type Locale, talkPath, ui } from "@/i18n/content";
+import Layout from "@/layouts/Layout.astro";
+
+interface Props {
+	locale: Locale;
+}
+const { locale } = Astro.props;
+const copy = ui[locale];
+const alternateLocale = locale === "es" ? "en" : "es";
+const selectedService = Astro.url.searchParams.get("service") ?? "";
+const brands = [
+	{ name: "Innovative", image: "/images/mockups/gorra_y_taza_innovative.avif" },
+	{ name: "Condo Hub", image: "/images/mockups/laptop_y_movil_condo_hub.avif" },
+	{
+		name: "Maps for Mom & El Elyon",
+		image: "/images/mockups/botellas_marcas.avif",
+	},
+];
+---
+
+<Layout locale={locale} title={copy.talk.seoTitle} description={copy.talk.seoDescription} canonicalPath={talkPath(locale)} alternatePath={talkPath(alternateLocale)} image="/images/06-proyectos-destacados.avif">
+	<Navbar locale={locale} alternatePath={talkPath(alternateLocale)} />
+	<main>
+		<section class="px-2 pb-12 sm:px-6 sm:pb-20 lg:px-8 2xl:px-14">
+			<div class="relative mx-auto max-w-425 overflow-hidden rounded-3xl bg-charcoal px-6 py-14 text-white sm:px-12 sm:py-20 lg:px-18 lg:py-24 2xl:rounded-4xl 2xl:px-24 2xl:py-30">
+				<div class="absolute -top-32 -right-24 size-100 rounded-full bg-orange-500/25 blur-3xl"></div>
+				<p class="relative font-heading text-sm font-semibold tracking-[0.18em] text-orange-500 uppercase">{copy.talk.eyebrow}</p>
+				<h1 class="relative mt-5 max-w-240 font-heading text-4xl leading-[0.98] font-bold tracking-[-0.035em] sm:text-6xl lg:text-7xl 2xl:text-8xl">{copy.talk.title}</h1>
+				<p class="relative mt-7 max-w-190 text-lg leading-relaxed text-white/70 sm:text-xl 2xl:text-2xl">{copy.talk.description}</p>
+			</div>
+		</section>
+
+		<section class="bg-cream-100 px-4 py-14 sm:px-6 sm:py-20 lg:px-8 2xl:px-14 2xl:py-28" aria-labelledby="brand-intro-title">
+			<div class="mx-auto max-w-425">
+				<div class="grid gap-6 lg:grid-cols-[0.7fr_1fr] lg:items-end">
+					<h2 id="brand-intro-title" class="font-heading text-3xl leading-tight font-bold sm:text-5xl 2xl:text-6xl">{copy.talk.brandsTitle}</h2>
+					<p class="max-w-180 text-lg leading-relaxed text-muted sm:text-xl">{copy.talk.brandsDescription}</p>
+				</div>
+				<div class="mt-10 grid gap-3 sm:grid-cols-3 lg:mt-14">
+					{brands.map((brand) => (
+						<article class="overflow-hidden rounded-3xl bg-white">
+							<img src={brand.image} alt={brand.name} width="620" height="460" loading="lazy" class="aspect-4/3 w-full object-cover" />
+							<h3 class="p-5 font-heading text-xl font-semibold">{brand.name}</h3>
+						</article>
+					))}
+				</div>
+			</div>
+		</section>
+
+		<section class="px-4 py-14 sm:px-6 sm:py-20 lg:px-8 2xl:px-14 2xl:py-28" aria-labelledby="project-form-title">
+			<div class="mx-auto grid max-w-425 gap-5 lg:grid-cols-[0.55fr_1fr] lg:gap-10">
+				<div class="flex flex-col justify-between rounded-3xl bg-orange-500 p-7 text-white sm:p-10 2xl:p-12">
+					<div>
+						<h2 id="project-form-title" class="font-heading text-3xl leading-tight font-bold sm:text-5xl">{copy.talk.formTitle}</h2>
+						<p class="mt-5 text-lg leading-relaxed text-white/80">{copy.talk.formDescription}</p>
+					</div>
+					<div class="mt-12">
+						<a href="mailto:marias@managerord.com" class="text-lg font-semibold">marias@managerord.com</a>
+						<SocialLinks class="mt-4" />
+					</div>
+				</div>
+				<div class="rounded-3xl bg-[#faf7f3] p-6 sm:p-9 2xl:p-11">
+					<ContactForm locale={locale} detailed selectedService={selectedService} />
+				</div>
+			</div>
+		</section>
+	</main>
+	<Footer locale={locale} />
+</Layout>
