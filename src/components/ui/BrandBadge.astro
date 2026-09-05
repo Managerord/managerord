@@ -1,0 +1,15 @@
+---
+import type { Brand } from "@/data/brands";
+
+interface Props {
+	brand: Brand;
+	class?: string;
+}
+
+const { brand, class: className = "" } = Astro.props;
+---
+
+<div class={`flex items-center gap-2 rounded-full border border-neutral-200 bg-white px-4 py-2 shadow-sm ${className}`}>
+	<img src={brand.logo} alt={brand.name} class="h-5 w-5" loading="lazy" />
+	<span class="text-sm font-medium">{brand.name}</span>
+</div>

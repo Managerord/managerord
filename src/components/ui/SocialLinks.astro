@@ -1,0 +1,56 @@
+---
+import Facebook from "@/assets/icons/facebook.svg";
+import Instagram from "@/assets/icons/instagram.svg";
+import LinkedIn from "@/assets/icons/linkedin.svg";
+import WhatsApp from "@/assets/icons/whatsapp.svg";
+
+interface SocialLink {
+	label: string;
+	href: string;
+}
+
+interface Props {
+	links?: SocialLink[];
+	class?: string;
+}
+
+const {
+	links = [
+		{ label: "Instagram", href: "https://www.instagram.com/managerord" },
+		{ label: "Facebook", href: "https://www.facebook.com/managerord" },
+		{ label: "LinkedIn", href: "https://www.linkedin.com/company/managero-rd" },
+		{ label: "WhatsApp", href: "https://wa.me/18097191911" },
+	],
+	class: className = "",
+} = Astro.props;
+
+const icons = {
+	instagram: Instagram,
+	facebook: Facebook,
+	linkedin: LinkedIn,
+	whatsapp: WhatsApp,
+} as const;
+---
+
+<ul class={`flex gap-1.75 ${className}`}>
+	{links.map((link) => {
+		const Icon = icons[link.label.toLowerCase() as keyof typeof icons];
+		return (
+			<li>
+				<a
+					class="flex size-7 items-center justify-center rounded-full border border-current text-inherit opacity-90 transition-[opacity,background] hover:bg-white/15 hover:opacity-100 lg:size-6 2xl:size-7"
+					href={link.href}
+					aria-label={link.label}
+				>
+					{Icon ? (
+						<Icon class="size-3.5 lg:size-3 2xl:size-3.5" aria-hidden="true" />
+					) : (
+						<span class="font-heading text-xs font-bold lg:text-[10px] 2xl:text-xs">
+							{link.label.slice(0, 1)}
+						</span>
+					)}
+				</a>
+			</li>
+		);
+	})}
+</ul>

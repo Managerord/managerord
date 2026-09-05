@@ -1,0 +1,43 @@
+---
+import ArrowRight from "@/assets/icons/arrow-right.svg";
+import MessageCircle from "@/assets/icons/message-circle.svg";
+import Monitor from "@/assets/icons/monitor.svg";
+import Share2 from "@/assets/icons/share-2.svg";
+import Smartphone from "@/assets/icons/smartphone.svg";
+import SectionHeading from "@/components/ui/SectionHeading.astro";
+
+const services = [
+	{ icon: Share2, label: "Branding", class: "rounded-tr-none" },
+	{ icon: Monitor, label: "Diseño Web" },
+	{ icon: MessageCircle, label: "Redes Sociales" },
+	{ icon: Smartphone, label: "Aplicaciones", class: "rounded-tl-none" },
+];
+---
+
+<section class="px-4 pt-14 sm:px-6 sm:pt-20 lg:px-8 lg:pt-22 2xl:px-14 2xl:pt-28">
+	<div class="mx-auto w-full max-w-425">
+		<SectionHeading
+			title="Todo lo que tu marca necesita, en un solo lugar"
+			description="Desde la estrategia hasta la ejecución, construimos un sistema de marca coherente en cada punto de contacto."
+			class="mx-auto text-center"
+		/>
+
+		<div class="flex w-full items-stretch gap-2 overflow-x-auto py-10 sm:gap-3 lg:gap-4 lg:overflow-visible lg:py-13 xl:gap-5 2xl:gap-6 2xl:py-16">
+			{services.slice(0, 2).map(({ icon: Icon, label, class: itemClass }) => (
+				<div class:list={["flex min-w-40 shrink-0 items-center justify-center gap-2 rounded-full bg-cream-100 px-4 py-4 lg:min-w-0 lg:flex-1 lg:px-5 lg:py-5.5 2xl:px-6 2xl:py-7", itemClass]}>
+					<Icon class="size-5 shrink-0 text-black lg:size-4 2xl:size-5" />
+					<span class="text-black font-medium text-sm lg:text-base 2xl:text-xl">{label}</span>
+				</div>
+			))}
+			<div class="flex w-20 shrink-0 items-center justify-center rounded-t-lg bg-orange-500 px-5 py-3 lg:w-24 lg:px-4 lg:py-3 xl:w-35 2xl:w-44 2xl:px-5 2xl:py-4">
+				<ArrowRight class="text-white size-8 lg:size-13 2xl:size-16" />
+			</div>
+			{services.slice(2).map(({ icon: Icon, label, class: itemClass }) => (
+				<div class:list={["flex min-w-40 shrink-0 items-center justify-center gap-2 rounded-full bg-cream-100 px-4 py-4 lg:min-w-0 lg:flex-1 lg:px-5 lg:py-5.5 2xl:px-6 2xl:py-7", itemClass]}>
+					<Icon class="size-5 shrink-0 text-black lg:size-4 2xl:size-5" />
+					<span class="text-black font-medium text-sm lg:text-base 2xl:text-xl">{label}</span>
+				</div>
+			))}
+		</div>
+	</div>
+</section>

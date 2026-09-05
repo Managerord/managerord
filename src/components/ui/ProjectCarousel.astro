@@ -1,0 +1,95 @@
+---
+import ArrowLeft from "@/assets/icons/arrow-left.svg";
+import ArrowRight from "@/assets/icons/arrow-right.svg";
+import type { Project } from "@/data/projects";
+
+interface Props {
+	projects: Project[];
+}
+
+const { projects } = Astro.props;
+---
+
+<div class="mt-8 sm:mt-12 lg:mt-10 2xl:mt-12" data-carousel>
+	<div class="relative overflow-hidden rounded-3xl bg-neutral-100 lg:rounded-[20px] 2xl:rounded-3xl h-150">
+		<div class="flex transition-transform duration-500 ease-out" data-carousel-track>
+			{projects.map((project) => (
+				<div
+					class="aspect-4/5 w-full shrink-0 sm:aspect-video"
+					data-title={project.title}
+					data-category={project.category}
+				>
+					<img
+						src={project.image}
+						alt={project.title}
+						class="h-150 w-full object-cover"
+						loading="lazy"
+					/>
+				</div>
+			))}
+		</div>
+
+		<div class="pointer-events-none absolute inset-0 flex items-center justify-between z-20">
+			<button
+				type="button"
+				aria-label="Proyecto anterior"
+				class="pointer-events-auto flex size-12 shrink-0 cursor-pointer items-center justify-center rounded-full bg-white text-orange-500 shadow-soft hover:shadow-hover sm:size-16 lg:size-20 2xl:size-24"
+				data-carousel-prev
+			>
+				<ArrowLeft class="size-6 sm:size-9 lg:size-11 2xl:size-14" />
+			</button>
+			<button
+				type="button"
+				aria-label="Proyecto siguiente"
+				class="pointer-events-auto flex size-12 shrink-0 cursor-pointer items-center justify-center rounded-full bg-white text-orange-500 shadow-soft hover:shadow-hover sm:size-16 lg:size-20 2xl:size-24"
+				data-carousel-next
+			>
+				<ArrowRight class="size-6 sm:size-9 lg:size-11 2xl:size-14" />
+			</button>
+		</div>
+
+		<div class="pointer-events-none absolute inset-x-0 top-4 flex items-center justify-center gap-2 sm:top-6">
+			{projects.map((project, index) => (
+				<button
+					type="button"
+					aria-label={`Ir a ${project.title}`}
+					aria-current={index === 0}
+					class="pointer-events-auto h-2 w-2 rounded-full bg-white/60 transition-all aria-current:w-6 aria-current:bg-orange-500"
+					data-carousel-dot
+					data-index={index}
+				/>
+			))}
+		</div>
+	</div>
+
+	<div class="mt-4 flex min-w-0 flex-col items-start gap-1 sm:flex-row sm:items-center sm:justify-between">
+		<p class="min-w-0 font-heading text-xl font-semibold break-words sm:text-3xl lg:text-2xl 2xl:text-3xl" data-carousel-title>{projects[0]?.title}</p>
+		<p class="min-w-0 font-heading text-xl text-muted break-words sm:text-3xl lg:text-2xl 2xl:text-3xl" data-carousel-category>{projects[0]?.category}</p>
+	</div>
+</div>
+
+<script>
+	document.querySelectorAll<HTMLElement>("[data-carousel]").forEach((carousel) => {
+		const track = carousel.querySelector<HTMLElement>("[data-carousel-track]");
+		const slides = Array.from(carousel.querySelectorAll<HTMLElement>("[data-carousel-track] > div"));
+		const dots = Array.from(carousel.querySelectorAll<HTMLButtonElement>("[data-carousel-dot]"));
+		const titleEl = carousel.querySelector<HTMLElement>("[data-carousel-title]");
+		const categoryEl = carousel.querySelector<HTMLElement>("[data-carousel-category]");
+
+		if (!track || slides.length === 0) return;
+
+		let index = 0;
+
+		const goTo = (nextIndex: number) => {
+			index = (nextIndex + slides.length) % slides.length;
+			track.style.transform = `translateX(-${index * 100}%)`;
+			dots.forEach((dot, i) => dot.setAttribute("aria-current", String(i === index)));
+			if (titleEl) titleEl.textContent = slides[index].dataset.title ?? "";
+			if (categoryEl) categoryEl.textContent = slides[index].dataset.category ?? "";
+		};
+
+		carousel.querySelector("[data-carousel-prev]")?.addEventListener("click", () => goTo(index - 1));
+		carousel.querySelector("[data-carousel-next]")?.addEventListener("click", () => goTo(index + 1));
+		dots.forEach((dot, i) => dot.addEventListener("click", () => goTo(i)));
+	});
+</script>

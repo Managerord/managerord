@@ -1,0 +1,20 @@
+---
+import ExtraServiceCard from "@/components/ui/ExtraServiceCard.astro";
+import SectionHeading from "@/components/ui/SectionHeading.astro";
+import { extraServices } from "@/data/extraServices";
+---
+
+<section class="bg-warm-white px-4 py-12 sm:px-6 sm:py-20 lg:px-8 lg:py-22 2xl:px-14 2xl:py-28">
+	<div class="mx-auto w-full max-w-425">
+		<SectionHeading
+			title="Más servicios para impulsar tu marca"
+			description="Complementa tu estrategia con soluciones adicionales."
+		/>
+
+		<div class="mt-8 grid gap-6 sm:mt-12 lg:mt-10 lg:grid-cols-2 lg:gap-6 2xl:mt-12 2xl:gap-8">
+			{extraServices.map((service) => (
+				<ExtraServiceCard service={service} />
+			))}
+		</div>
+	</div>
+</section>

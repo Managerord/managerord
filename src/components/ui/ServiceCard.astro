@@ -1,0 +1,31 @@
+---
+import type { Service } from "@/data/services";
+import ArrowButton from "./ArrowButton.astro";
+
+interface Props {
+	service: Service;
+}
+
+const { service } = Astro.props;
+---
+
+<div
+	class="relative flex min-h-[420px] flex-col justify-between overflow-hidden rounded-3xl border border-neutral-200 p-5 sm:min-h-[480px] sm:p-6 lg:rounded-[20px] xl:h-112 xl:min-h-0 2xl:h-140 2xl:rounded-3xl 2xl:p-8"
+>
+	<img
+		src={service.image}
+		alt={service.title}
+		class="absolute inset-0 h-full w-full object-cover"
+	/>
+	{service.overlay && <div class="absolute inset-0 bg-linear-to-b from-black/75 via-black/30 to-transparent"></div>}
+
+	<div class="relative z-10 flex flex-col">
+		<p class:list={["mt-4 text-2xl font-semibold sm:text-3xl xl:mt-3 xl:text-2xl 2xl:mt-4 2xl:text-3xl", service.class]}>
+			{service.title}
+		</p>
+		<p class:list={["mt-5 text-base font-normal sm:mt-8 sm:text-lg lg:mt-6 lg:text-base 2xl:mt-8 2xl:text-xl", service.class]}>
+			{service.description}
+		</p>
+	</div>
+	<ArrowButton class="mt-8 self-end" label={service.title} />
+</div>

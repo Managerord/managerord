@@ -1,0 +1,58 @@
+---
+import ChevronRight from "@/assets/icons/chevron-right.svg";
+---
+
+<form class="grid gap-2.75 lg:gap-2.25 2xl:gap-2.75" method="POST">
+	<div class="grid grid-cols-2 gap-3.5 lg:gap-3 2xl:gap-3.5 max-[520px]:grid-cols-1">
+		<div class="flex flex-col gap-1">
+			<label for="name" class="text-sm font-semibold text-[#5e5852] lg:text-xs 2xl:text-sm">Nombre</label>
+			<input
+				id="name"
+				name="name"
+				type="text"
+				required
+				class="w-full rounded-md border border-[#eee9e2] bg-white px-3 py-2.5 text-base text-[#332f2b] outline-none transition-colors placeholder:text-[#aaa39c] focus:border-orange-500 sm:text-sm lg:px-2.5 lg:py-2 lg:text-xs 2xl:px-3 2xl:py-2.5 2xl:text-sm"
+				placeholder="Nombre"
+			/>
+		</div>
+		<div class="flex flex-col gap-1">
+			<label for="email" class="text-sm font-semibold text-[#5e5852] lg:text-xs 2xl:text-sm">Correo</label>
+			<input
+				id="email"
+				name="email"
+				type="email"
+				required
+				class="w-full rounded-md border border-[#eee9e2] bg-white px-3 py-2.5 text-base text-[#332f2b] outline-none transition-colors placeholder:text-[#aaa39c] focus:border-orange-500 sm:text-sm lg:px-2.5 lg:py-2 lg:text-xs 2xl:px-3 2xl:py-2.5 2xl:text-sm"
+				placeholder="Correo electrónico"
+			/>
+		</div>
+	</div>
+	<div class="flex flex-col gap-1">
+		<label for="service" class="text-sm font-semibold text-[#5e5852] lg:text-xs 2xl:text-sm">Servicio</label>
+		<select id="service" name="service" required class="w-full rounded-md border border-[#eee9e2] bg-white px-3 py-2.5 text-base text-[#332f2b] outline-none transition-colors focus:border-orange-500 sm:text-sm lg:px-2.5 lg:py-2 lg:text-xs 2xl:px-3 2xl:py-2.5 2xl:text-sm">
+			<option value="" selected disabled>Selecciona un servicio</option>
+			<option value="branding">Identidad visual</option>
+			<option value="web">Diseño web</option>
+			<option value="content">Contenido digital</option>
+			<option value="development">Apps y sistemas</option>
+		</select>
+	</div>
+	<div class="flex flex-col gap-1">
+		<label for="message" class="text-sm font-semibold text-[#5e5852] lg:text-xs 2xl:text-sm">Mensaje</label>
+		<textarea
+			id="message"
+			name="message"
+			rows="2"
+			required
+			class="min-h-14 w-full resize-y rounded-md border border-[#eee9e2] bg-white px-3 py-2.5 text-base text-[#332f2b] outline-none transition-colors placeholder:text-[#aaa39c] focus:border-orange-500 sm:text-sm lg:min-h-11 lg:px-2.5 lg:py-2 lg:text-xs 2xl:min-h-14 2xl:px-3 2xl:py-2.5 2xl:text-sm"
+			placeholder="Cuéntanos qué tienes en mente y lo construimos juntos..."
+		></textarea>
+	</div>
+	<button
+		type="submit"
+		class="mt-0.25 inline-flex w-fit cursor-pointer items-center justify-center gap-1.75 rounded-full border-0 bg-orange-500 px-5 py-2.5 text-sm font-bold text-white uppercase hover:bg-orange-600 lg:gap-1.5 lg:px-4 lg:py-2 lg:text-xs 2xl:gap-1.75 2xl:px-5 2xl:py-2.5 2xl:text-sm"
+	>
+		Enviar solicitud
+		<ChevronRight class="size-3.25 lg:size-2.75 2xl:size-3.25" aria-hidden="true" />
+	</button>
+</form>

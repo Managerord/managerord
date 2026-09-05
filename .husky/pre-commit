@@ -1,0 +1,4 @@
+pnpm audit
+pnpm run typecheck
+pnpm run lint:format
+pnpm run lint:fix

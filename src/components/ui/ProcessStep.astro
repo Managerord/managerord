@@ -1,0 +1,40 @@
+---
+import Message from "@/assets/icons/message.svg";
+import Pencil from "@/assets/icons/pencil.svg";
+import Rocket from "@/assets/icons/rocket.svg";
+import Target from "@/assets/icons/target.svg";
+import type { ProcessStep } from "@/data/process";
+
+interface Props {
+	step: ProcessStep;
+	featured?: boolean;
+}
+
+const { step, featured = false } = Astro.props;
+const icons = {
+	message: Message,
+	target: Target,
+	pencil: Pencil,
+	rocket: Rocket,
+};
+const Icon = icons[step.icon];
+---
+
+<article
+	class:list={[
+		"relative min-h-60 rounded-[26px] border border-[rgba(54,43,31,0.035)] px-6.5 pt-6.25 pr-18.5 pb-7 shadow-[0_10px_28px_rgba(71,55,38,0.035)] lg:min-h-48 lg:rounded-[21px] lg:px-5 lg:pt-5 lg:pr-15 lg:pb-5.5 2xl:min-h-60 2xl:rounded-[26px] 2xl:px-6.5 2xl:pt-6.25 2xl:pr-18.5 2xl:pb-7 max-lg:min-h-55 max-sm:min-h-50 max-sm:px-5 max-sm:pt-5 max-sm:pr-5 max-sm:pb-16",
+		featured ? "bg-[#fce7d8]" : "bg-white/90",
+	]}
+>
+	<span
+		class:list={[
+			"mb-2.25 block font-heading text-2xl leading-none font-normal lg:mb-2 lg:text-xl 2xl:mb-2.25 2xl:text-2xl",
+			featured ? "text-orange-500" : "text-[#4d4843]",
+		]}
+	>
+		{step.number}
+	</span>
+	<h3 class="font-heading text-xl leading-[1.2] font-bold 2xl:text-2xl">{step.title}</h3>
+	<p class="mt-2.5 text-base leading-[1.45] text-[#4f4a45] lg:mt-2 lg:text-sm 2xl:mt-2.5 2xl:text-base">{step.description}</p>
+	<Icon class="absolute right-6.25 bottom-5.75 size-9.75 text-[#34312e] lg:right-5 lg:bottom-4.5 lg:size-8 2xl:right-6.25 2xl:bottom-5.75 2xl:size-9.75" aria-hidden="true" />
+</article>

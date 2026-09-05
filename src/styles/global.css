@@ -1,0 +1,69 @@
+@import "tailwindcss";
+
+@theme {
+	--color-orange-500: #f25a0a;
+	--color-orange-600: #d94800;
+	--color-brand-beige: #b1a172;
+	--color-sand-100: #e8dfd0;
+	--color-cream-100: #f6f1e9;
+	--color-warm-white: #fcfaf7;
+	--color-charcoal: #201e1c;
+	--color-muted: #69635d;
+	--color-border: #e7e0d7;
+	--color-white: #ffffff;
+
+	--font-sans: "Nunito", "Inter", Arial, sans-serif;
+	--font-heading: "Nordeco", "Inter", Arial, sans-serif;
+
+	--radius-sm: 12px;
+	--radius-md: 18px;
+	--radius-lg: 24px;
+	--radius-xl: 32px;
+	--radius-pill: 999px;
+
+	--shadow-soft: 0 12px 36px rgba(54, 43, 31, 0.06);
+	--shadow-hover: 0 16px 42px rgba(54, 43, 31, 0.1);
+
+	--container-max: 1360px;
+	--transition-standard: 220ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+@font-face {
+	font-display: swap;
+	font-family: "Nordeco";
+	font-style: normal;
+	font-weight: 300;
+	src: url("/fonts/nordeco-light.woff2") format("woff2");
+}
+
+@font-face {
+	font-display: swap;
+	font-family: "Nordeco";
+	font-style: normal;
+	font-weight: 400;
+	src: url("/fonts/nordeco-regular.woff2") format("woff2");
+}
+
+@font-face {
+	font-display: swap;
+	font-family: "Nordeco";
+	font-style: normal;
+	font-weight: 600;
+	src: url("/fonts/nordeco-semibold.woff2") format("woff2");
+}
+
+@font-face {
+	font-display: swap;
+	font-family: "Nordeco";
+	font-style: normal;
+	font-weight: 700;
+	src: url("/fonts/nordeco-bold.woff2") format("woff2");
+}
+
+@font-face {
+	font-display: swap;
+	font-family: "Nunito";
+	font-style: normal;
+	font-weight: 400;
+	src: url("/fonts/nunito-v32-latin-regular.woff2") format("woff2");
+}

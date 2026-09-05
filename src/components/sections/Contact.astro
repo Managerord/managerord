@@ -1,0 +1,39 @@
+---
+import Mail from "@/assets/icons/mail.svg";
+import MapPin from "@/assets/icons/map-pin.svg";
+import Phone from "@/assets/icons/phone.svg";
+import ContactForm from "@/components/ui/ContactForm.astro";
+import SocialLinks from "@/components/ui/SocialLinks.astro";
+---
+
+<section
+	id="contacto"
+	class="px-4 pb-6 sm:px-6 lg:px-8 lg:pb-5 2xl:px-14 2xl:pb-6"
+	aria-labelledby="contact-title"
+>
+	<div class="mx-auto grid w-full max-w-425 grid-cols-[minmax(280px,0.62fr)_minmax(520px,1fr)] gap-[clamp(28px,4vw,64px)] lg:grid-cols-[minmax(224px,0.62fr)_minmax(416px,1fr)] lg:gap-10 2xl:grid-cols-[minmax(280px,0.62fr)_minmax(520px,1fr)] 2xl:gap-16 max-[900px]:grid-cols-1 max-[900px]:gap-4">
+	<div class="rounded-3xl bg-orange-500 px-8 py-6 text-white lg:rounded-[20px] lg:px-6.5 lg:py-5 2xl:rounded-3xl 2xl:px-8 2xl:py-6 max-sm:rounded-md max-sm:p-5.5">
+		<h2 id="contact-title" class="font-heading text-3xl leading-[0.98] font-bold sm:text-4xl lg:text-3xl 2xl:text-4xl">Hablemos de<br />tu proyecto</h2>
+		<p class="mt-5 text-base leading-[1.35] text-white/85 lg:mt-4 lg:text-sm 2xl:mt-5 2xl:text-base">Cuéntanos tu idea y juntos<br />la haremos realidad.</p>
+		<address class="mt-4 grid gap-1.5 text-sm not-italic 2xl:text-base">
+			<a class="inline-flex w-fit items-center gap-1.75" href="mailto:marias@managerord.com">
+				<Mail class="size-3.5 lg:size-2.75 2xl:size-3.5" aria-hidden="true" />
+				marias@managerord.com
+			</a>
+			<a class="inline-flex w-fit items-center gap-1.75" href="tel:+18097191911">
+				<Phone class="size-3.5 lg:size-2.75 2xl:size-3.5" aria-hidden="true" />
+				(809) 719-1911
+			</a>
+			<span class="inline-flex w-fit items-center gap-1.75">
+				<MapPin class="size-3.5 lg:size-2.75 2xl:size-3.5" aria-hidden="true" />
+				Santo Domingo, RD
+			</span>
+		</address>
+		<SocialLinks class="mt-2.5 2xl:mt-3.25" />
+	</div>
+
+	<div class="rounded-3xl bg-[#faf7f3] px-6 py-4.5 lg:rounded-[20px] lg:px-5 lg:py-3.5 2xl:rounded-3xl 2xl:px-6 2xl:py-4.5 max-sm:rounded-md max-sm:p-5.5">
+		<ContactForm />
+	</div>
+	</div>
+</section>

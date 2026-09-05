@@ -1,0 +1,25 @@
+---
+interface Props {
+	categories: string[];
+	active?: string;
+}
+
+const { categories, active = categories[0] } = Astro.props;
+---
+
+<div class="flex flex-wrap gap-2" data-category-tabs>
+	{categories.map((category) => (
+		<button
+			type="button"
+			class:list={[
+				"rounded-full px-4 py-2 text-sm font-medium transition-colors",
+				category === active
+					? "bg-neutral-900 text-white"
+					: "bg-neutral-100 text-neutral-700 hover:bg-neutral-200",
+			]}
+			data-category={category}
+		>
+			{category}
+		</button>
+	))}
+</div>
