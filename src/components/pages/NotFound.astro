@@ -1,0 +1,34 @@
+---
+import Footer from "@/components/layout/Footer.astro";
+import Navbar from "@/components/layout/Navbar.astro";
+import Button from "@/components/ui/Button.astro";
+import { type Locale, localePath, talkPath, ui } from "@/i18n/content";
+import Layout from "@/layouts/Layout.astro";
+
+interface Props {
+	locale: Locale;
+}
+
+const { locale } = Astro.props;
+const copy = ui[locale].notFound;
+const home = localePath(locale);
+---
+
+<Layout locale={locale} title={copy.seoTitle} description={copy.seoDescription} canonicalPath={home}>
+	<Navbar locale={locale} />
+	<main>
+		<section class="px-2 pb-14 sm:px-6 sm:pb-20 lg:px-8 2xl:px-14">
+			<div class="mx-auto flex max-w-425 flex-col items-center justify-center rounded-3xl bg-cream-100 p-10 text-center sm:p-16 lg:p-24 2xl:rounded-4xl">
+				<p class="font-heading text-sm font-semibold tracking-[0.18em] text-orange-500 uppercase">{copy.eyebrow}</p>
+				<h1 class="mt-4 font-heading text-5xl leading-none font-bold tracking-[-0.035em] sm:text-7xl 2xl:text-8xl">404</h1>
+				<h2 class="mt-6 font-heading text-2xl leading-tight font-bold sm:text-4xl">{copy.title}</h2>
+				<p class="mt-4 max-w-md text-lg leading-relaxed text-muted sm:text-xl">{copy.description}</p>
+				<div class="mt-8 flex flex-col gap-4 sm:flex-row">
+					<Button href={home} class="bg-orange-500 text-white hover:bg-orange-600">{copy.cta}</Button>
+					<Button href={talkPath(locale)} variant="secondary">{copy.secondaryCta}</Button>
+				</div>
+			</div>
+		</section>
+	</main>
+	<Footer locale={locale} />
+</Layout>

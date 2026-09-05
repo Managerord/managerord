@@ -1,0 +1,18 @@
+---
+export const prerender = false;
+
+import NotFound from "@/components/pages/NotFound.astro";
+import type { Locale } from "@/i18n/content";
+
+const path = Astro.url.pathname;
+const locale: Locale =
+	path.startsWith("/en/") || path === "/en"
+		? "en"
+		: path.startsWith("/es/") || path === "/es"
+			? "es"
+			: Astro.preferredLocale === "en"
+				? "en"
+				: "es";
+---
+
+<NotFound locale={locale} />

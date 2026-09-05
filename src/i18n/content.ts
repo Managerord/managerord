@@ -139,6 +139,16 @@ export const ui = {
 				"Cuéntanos qué necesitas y diseñaremos una ruta ajustada a tu marca.",
 			cta: "Hablemos de tu proyecto",
 		},
+		notFound: {
+			eyebrow: "Error 404",
+			title: "Esta página no existe",
+			description:
+				"Puede que el enlace esté roto o que la página se haya movido. Vuelve al inicio o cuéntanos tu proyecto.",
+			cta: "Volver al inicio",
+			secondaryCta: "Hablemos de tu proyecto",
+			seoTitle: "Página no encontrada | Managero",
+			seoDescription: "La página que buscas no existe o fue movida.",
+		},
 	},
 	en: {
 		seo: {
@@ -272,6 +282,16 @@ export const ui = {
 			ctaDescription:
 				"Tell us what you need and we'll design a path around your brand.",
 			cta: "Let's talk about your project",
+		},
+		notFound: {
+			eyebrow: "Error 404",
+			title: "This page doesn't exist",
+			description:
+				"The link might be broken or the page may have moved. Head back home or tell us about your project.",
+			cta: "Back to home",
+			secondaryCta: "Let's talk about your project",
+			seoTitle: "Page not found | Managero",
+			seoDescription: "The page you're looking for doesn't exist or was moved.",
 		},
 	},
 } as const;
