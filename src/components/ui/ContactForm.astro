@@ -1,6 +1,18 @@
 ---
 import { actions } from "astro:actions";
 import ChevronRight from "@/assets/icons/chevron-right.svg";
+import { type Locale, ui } from "@/i18n/content";
+
+interface Props {
+	locale?: Locale;
+	detailed?: boolean;
+	selectedService?: string;
+}
+
+const { locale = "es", detailed = false, selectedService = "" } = Astro.props;
+const copy = ui[locale].form;
+const inputClass =
+	"w-full rounded-md border border-[#eee9e2] bg-white px-3 py-2.5 text-base text-[#332f2b] outline-none transition-colors placeholder:text-[#aaa39c] focus:border-orange-500 sm:text-sm lg:px-2.5 lg:py-2 lg:text-xs 2xl:px-3 2xl:py-2.5 2xl:text-sm";
 ---
 
 <form
@@ -8,50 +20,79 @@ import ChevronRight from "@/assets/icons/chevron-right.svg";
 	class="grid gap-2.75 lg:gap-2.25 2xl:gap-2.75"
 	method="POST"
 	action={actions.send}
+	data-error={copy.error}
 >
+	<input type="hidden" name="locale" value={locale} />
 	<div class="grid grid-cols-2 gap-3.5 lg:gap-3 2xl:gap-3.5 max-[520px]:grid-cols-1">
 		<div class="flex flex-col gap-1">
-			<label for="name" class="text-sm font-semibold text-[#5e5852] lg:text-xs 2xl:text-sm">Nombre</label>
+			<label for="name" class="text-sm font-semibold text-[#5e5852] lg:text-xs 2xl:text-sm">{copy.name}</label>
 			<input
 				id="name"
 				name="name"
 				type="text"
 				required
-				class="w-full rounded-md border border-[#eee9e2] bg-white px-3 py-2.5 text-base text-[#332f2b] outline-none transition-colors placeholder:text-[#aaa39c] focus:border-orange-500 sm:text-sm lg:px-2.5 lg:py-2 lg:text-xs 2xl:px-3 2xl:py-2.5 2xl:text-sm"
-				placeholder="Nombre"
+				class={inputClass}
+				placeholder={copy.name}
 			/>
 		</div>
 		<div class="flex flex-col gap-1">
-			<label for="email" class="text-sm font-semibold text-[#5e5852] lg:text-xs 2xl:text-sm">Correo</label>
+			<label for="email" class="text-sm font-semibold text-[#5e5852] lg:text-xs 2xl:text-sm">{copy.email}</label>
 			<input
 				id="email"
 				name="email"
 				type="email"
 				required
-				class="w-full rounded-md border border-[#eee9e2] bg-white px-3 py-2.5 text-base text-[#332f2b] outline-none transition-colors placeholder:text-[#aaa39c] focus:border-orange-500 sm:text-sm lg:px-2.5 lg:py-2 lg:text-xs 2xl:px-3 2xl:py-2.5 2xl:text-sm"
-				placeholder="Correo electrónico"
+				class={inputClass}
+				placeholder={copy.emailPlaceholder}
 			/>
 		</div>
 	</div>
+	{detailed && (
+		<div class="grid grid-cols-2 gap-3.5 lg:gap-3 2xl:gap-3.5 max-[520px]:grid-cols-1">
+			<div class="flex flex-col gap-1">
+				<label for="company" class="text-sm font-semibold text-[#5e5852] lg:text-xs 2xl:text-sm">{copy.company}</label>
+				<input id="company" name="company" type="text" class={inputClass} placeholder={copy.company} />
+			</div>
+			<div class="flex flex-col gap-1">
+				<label for="phone" class="text-sm font-semibold text-[#5e5852] lg:text-xs 2xl:text-sm">{copy.phone}</label>
+				<input id="phone" name="phone" type="tel" class={inputClass} placeholder={copy.phone} />
+			</div>
+		</div>
+	)}
 	<div class="flex flex-col gap-1">
-		<label for="service" class="text-sm font-semibold text-[#5e5852] lg:text-xs 2xl:text-sm">Servicio</label>
-		<select id="service" name="service" required class="w-full rounded-md border border-[#eee9e2] bg-white px-3 py-2.5 text-base text-[#332f2b] outline-none transition-colors focus:border-orange-500 sm:text-sm lg:px-2.5 lg:py-2 lg:text-xs 2xl:px-3 2xl:py-2.5 2xl:text-sm">
-			<option value="" selected disabled>Selecciona un servicio</option>
-			<option value="branding">Identidad visual</option>
-			<option value="web">Diseño web</option>
-			<option value="content">Contenido digital</option>
-			<option value="development">Apps y sistemas</option>
+		<label for="service" class="text-sm font-semibold text-[#5e5852] lg:text-xs 2xl:text-sm">{copy.service}</label>
+		<select id="service" name="service" required class={inputClass}>
+			<option value="" selected={!selectedService} disabled>{copy.selectService}</option>
+			{Object.entries(copy.services).map(([value, label]) => <option value={value} selected={selectedService === value}>{label}</option>)}
 		</select>
 	</div>
+	{detailed && (
+		<div class="grid grid-cols-2 gap-3.5 lg:gap-3 2xl:gap-3.5 max-[520px]:grid-cols-1">
+			<div class="flex flex-col gap-1">
+				<label for="budget" class="text-sm font-semibold text-[#5e5852] lg:text-xs 2xl:text-sm">{copy.budget}</label>
+				<select id="budget" name="budget" class={inputClass}>
+					<option value="" selected>{copy.selectBudget}</option>
+					<option value="under-1000">US$500 - US$1,000</option>
+					<option value="1000-3000">US$1,000 - US$3,000</option>
+					<option value="3000-5000">US$3,000 - US$5,000</option>
+					<option value="over-5000">US$5,000+</option>
+				</select>
+			</div>
+			<div class="flex flex-col gap-1">
+				<label for="timeline" class="text-sm font-semibold text-[#5e5852] lg:text-xs 2xl:text-sm">{copy.timeline}</label>
+				<input id="timeline" name="timeline" type="text" class={inputClass} placeholder={copy.timeline} />
+			</div>
+		</div>
+	)}
 	<div class="flex flex-col gap-1">
-		<label for="message" class="text-sm font-semibold text-[#5e5852] lg:text-xs 2xl:text-sm">Mensaje</label>
+		<label for="message" class="text-sm font-semibold text-[#5e5852] lg:text-xs 2xl:text-sm">{copy.message}</label>
 		<textarea
 			id="message"
 			name="message"
-			rows="2"
+			rows={detailed ? 5 : 2}
 			required
 			class="min-h-14 w-full resize-y rounded-md border border-[#eee9e2] bg-white px-3 py-2.5 text-base text-[#332f2b] outline-none transition-colors placeholder:text-[#aaa39c] focus:border-orange-500 sm:text-sm lg:min-h-11 lg:px-2.5 lg:py-2 lg:text-xs 2xl:min-h-14 2xl:px-3 2xl:py-2.5 2xl:text-sm"
-			placeholder="Cuéntanos qué tienes en mente y lo construimos juntos..."
+			placeholder={copy.messagePlaceholder}
 		></textarea>
 	</div>
 	<p
@@ -66,7 +107,7 @@ import ChevronRight from "@/assets/icons/chevron-right.svg";
 		type="submit"
 		class="mt-px inline-flex w-fit cursor-pointer items-center justify-center gap-1.75 rounded-full border-0 bg-orange-500 px-5 py-2.5 text-sm font-bold text-white uppercase hover:bg-orange-600 disabled:cursor-not-allowed disabled:opacity-60 lg:gap-1.5 lg:px-4 lg:py-2 lg:text-xs 2xl:gap-1.75 2xl:px-5 2xl:py-2.5 2xl:text-sm"
 	>
-		Enviar solicitud
+		{copy.submit}
 		<ChevronRight class="size-3.25 lg:size-2.75 2xl:size-3.25" aria-hidden="true" />
 	</button>
 </form>
@@ -77,6 +118,15 @@ import ChevronRight from "@/assets/icons/chevron-right.svg";
 	const form = document.querySelector<HTMLFormElement>("#contact-form");
 	const status = document.querySelector<HTMLParagraphElement>("#contact-form-status");
 	const submitButton = form?.querySelector<HTMLButtonElement>('button[type="submit"]');
+	const serviceSelect = form?.querySelector<HTMLSelectElement>("#service");
+	const requestedService = new URLSearchParams(window.location.search).get("service");
+	if (
+		serviceSelect &&
+		requestedService &&
+		Array.from(serviceSelect.options).some((option) => option.value === requestedService)
+	) {
+		serviceSelect.value = requestedService;
+	}
 
 	form?.addEventListener("submit", async (event) => {
 		event.preventDefault();
@@ -91,7 +141,7 @@ import ChevronRight from "@/assets/icons/chevron-right.svg";
 		status.hidden = false;
 
 		if (error) {
-			status.textContent = error.message || "Ocurrió un error. Inténtalo de nuevo.";
+			status.textContent = error.message || form.dataset.error || "Something went wrong.";
 			status.classList.remove("text-green-600");
 			status.classList.add("text-red-600");
 			return;
