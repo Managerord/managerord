@@ -1,5 +1,11 @@
 ---
 import "@/styles/global.css";
+import {
+	locations,
+	US_TIME_ZONE_PREFIXES,
+	US_TIME_ZONES,
+} from "@/data/locations";
+import { organizationSchema } from "@/data/organization";
 import type { Locale } from "@/i18n/content";
 
 interface Props {
@@ -9,6 +15,8 @@ interface Props {
 	canonicalPath?: string;
 	alternatePath?: string;
 	image?: string;
+	imageAlt?: string;
+	noindex?: boolean;
 	schema?: Record<string, unknown> | Record<string, unknown>[];
 }
 
@@ -18,30 +26,20 @@ const {
 	locale = "es",
 	canonicalPath = Astro.url.pathname,
 	alternatePath,
-	image = "/images/01-hero-managero.avif",
+	image = "/images/og/default.jpg",
+	imageAlt,
+	noindex = false,
 	schema,
 } = Astro.props;
 const canonical = new URL(canonicalPath, Astro.site);
 const alternateLocale = locale === "es" ? "en" : "es";
 const socialImage = new URL(image, Astro.site);
-const organizationSchema = {
-	"@context": "https://schema.org",
-	"@type": "Organization",
-	name: "Managero",
-	url: new URL(`/${locale}/`, Astro.site).href,
-	logo: new URL("/images/logo.png", Astro.site).href,
-	email: "marias@managerord.com",
-	telephone: "+1-809-719-1911",
-	address: {
-		"@type": "PostalAddress",
-		addressLocality: "Santo Domingo",
-		addressCountry: "DO",
-	},
-	sameAs: [
-		"https://www.instagram.com/managerord",
-		"https://www.facebook.com/managerord",
-		"https://www.linkedin.com/company/managero-rd",
-	],
+const socialImageAlt = imageAlt ?? title;
+
+const usContact = {
+	phoneHref: locations.us.phone.href,
+	phoneDisplay: locations.us.phone.display,
+	address: locations.us.label[locale],
 };
 ---
 
@@ -51,43 +49,35 @@ const organizationSchema = {
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta name="description" content={description} />
-		<meta name="robots" content="index, follow, max-image-preview:large" />
-		<link rel="canonical" href={canonical} />
-		<link rel="alternate" hreflang={locale} href={canonical} />
-		{alternatePath && <link rel="alternate" hreflang={alternateLocale} href={new URL(alternatePath, Astro.site)} />}
-		{alternatePath && <link rel="alternate" hreflang="x-default" href={new URL(locale === "es" ? canonicalPath : alternatePath, Astro.site)} />}
+		<meta name="robots" content={noindex ? "noindex, follow" : "index, follow, max-image-preview:large"} />
+		{!noindex && <link rel="canonical" href={canonical} />}
+		{!noindex && <link rel="alternate" hreflang={locale} href={canonical} />}
+		{!noindex && alternatePath && <link rel="alternate" hreflang={alternateLocale} href={new URL(alternatePath, Astro.site)} />}
+		{!noindex && alternatePath && <link rel="alternate" hreflang="x-default" href={new URL(locale === "es" ? canonicalPath : alternatePath, Astro.site)} />}
+		<link rel="icon" href="/favicon.ico" sizes="any" />
 		<link rel="sitemap" href="/sitemap-index.xml" />
 		<meta property="og:type" content="website" />
 		<meta property="og:site_name" content="Managero" />
 		<meta property="og:locale" content={locale === "es" ? "es_DO" : "en_US"} />
+		<meta property="og:locale:alternate" content={locale === "es" ? "en_US" : "es_DO"} />
 		<meta property="og:title" content={title} />
 		<meta property="og:description" content={description} />
 		<meta property="og:url" content={canonical} />
 		<meta property="og:image" content={socialImage} />
+		<meta property="og:image:width" content="1200" />
+		<meta property="og:image:height" content="630" />
+		<meta property="og:image:alt" content={socialImageAlt} />
 		<meta name="twitter:card" content="summary_large_image" />
 		<meta name="twitter:title" content={title} />
 		<meta name="twitter:description" content={description} />
 		<meta name="twitter:image" content={socialImage} />
+		<meta name="twitter:image:alt" content={socialImageAlt} />
 		<title>{title}</title>
 		<script is:inline type="application/ld+json" set:html={JSON.stringify(organizationSchema)} />
 		{schema && <script is:inline type="application/ld+json" set:html={JSON.stringify(schema)} />}
 		<link
 			rel="preload"
-			href="/fonts/nordeco-light.woff2"
-			as="font"
-			type="font/woff2"
-			crossorigin
-		/>
-		<link
-			rel="preload"
-			href="/fonts/nordeco-regular.woff2"
-			as="font"
-			type="font/woff2"
-			crossorigin
-		/>
-		<link
-			rel="preload"
-			href="/fonts/nordeco-semibold.woff2"
+			href="/fonts/nunito-v32-latin-regular.woff2"
 			as="font"
 			type="font/woff2"
 			crossorigin
@@ -101,7 +91,7 @@ const organizationSchema = {
 		/>
 		<link
 			rel="preload"
-			href="/fonts/nunito-v32-latin-regular.woff2"
+			href="/fonts/nordeco-regular.woff2"
 			as="font"
 			type="font/woff2"
 			crossorigin
@@ -111,6 +101,28 @@ const organizationSchema = {
 		class="min-h-screen bg-warm-white text-charcoal antialiased font-sans"
 	>
 		<slot />
+		<script is:inline define:vars={{ usContact, usZones: US_TIME_ZONES, usPrefixes: US_TIME_ZONE_PREFIXES }}>
+			(() => {
+				try {
+					const zone = Intl.DateTimeFormat().resolvedOptions().timeZone || "";
+					const inUS =
+						usZones.includes(zone) ||
+						usPrefixes.some((prefix) => zone.startsWith(prefix));
+					if (!inUS) return;
+
+					for (const link of document.querySelectorAll("[data-contact-phone]")) {
+						link.setAttribute("href", "tel:" + usContact.phoneHref);
+					}
+					for (const el of document.querySelectorAll("[data-contact-phone-text]")) {
+						el.textContent = usContact.phoneDisplay;
+					}
+					for (const el of document.querySelectorAll("[data-contact-address-text]")) {
+						el.textContent = usContact.address;
+					}
+				} catch {
+				}
+			})();
+		</script>
 	</body>
 </html>
 

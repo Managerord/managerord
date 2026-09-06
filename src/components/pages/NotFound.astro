@@ -14,8 +14,8 @@ const copy = ui[locale].notFound;
 const home = localePath(locale);
 ---
 
-<Layout locale={locale} title={copy.seoTitle} description={copy.seoDescription} canonicalPath={home}>
-	<Navbar locale={locale} />
+<Layout locale={locale} title={copy.seoTitle} description={copy.seoDescription} noindex>
+	<Navbar locale={locale} selfPath={home} />
 	<main>
 		<section class="px-2 pb-14 sm:px-6 sm:pb-20 lg:px-8 2xl:px-14">
 			<div class="mx-auto flex max-w-425 flex-col items-center justify-center rounded-3xl bg-cream-100 p-10 text-center sm:p-16 lg:p-24 2xl:rounded-4xl">

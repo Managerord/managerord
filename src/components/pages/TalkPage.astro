@@ -3,6 +3,7 @@ import Footer from "@/components/layout/Footer.astro";
 import Navbar from "@/components/layout/Navbar.astro";
 import ContactForm from "@/components/ui/ContactForm.astro";
 import SocialLinks from "@/components/ui/SocialLinks.astro";
+import { sizeOf } from "@/data/imageSizes";
 import { type Locale, talkPath, ui } from "@/i18n/content";
 import Layout from "@/layouts/Layout.astro";
 
@@ -23,7 +24,7 @@ const brands = [
 ];
 ---
 
-<Layout locale={locale} title={copy.talk.seoTitle} description={copy.talk.seoDescription} canonicalPath={talkPath(locale)} alternatePath={talkPath(alternateLocale)} image="/images/06-proyectos-destacados.avif">
+<Layout locale={locale} title={copy.talk.seoTitle} description={copy.talk.seoDescription} canonicalPath={talkPath(locale)} alternatePath={talkPath(alternateLocale)} image="/images/og/hablemos.jpg">
 	<Navbar locale={locale} alternatePath={talkPath(alternateLocale)} />
 	<main>
 		<section class="px-2 pb-12 sm:px-6 sm:pb-20 lg:px-8 2xl:px-14">
@@ -44,7 +45,7 @@ const brands = [
 				<div class="mt-10 grid gap-3 sm:grid-cols-3 lg:mt-14">
 					{brands.map((brand) => (
 						<article class="overflow-hidden rounded-3xl bg-white">
-							<img src={brand.image} alt={brand.name} width="620" height="460" loading="lazy" class="aspect-4/3 w-full object-cover" />
+							<img src={brand.image} alt={brand.name} width={sizeOf(brand.image)?.width} height={sizeOf(brand.image)?.height} loading="lazy" class="aspect-4/3 w-full object-cover" />
 							<h3 class="p-5 font-heading text-xl font-semibold">{brand.name}</h3>
 						</article>
 					))}
