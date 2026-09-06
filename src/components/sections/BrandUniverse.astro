@@ -5,6 +5,7 @@ import Monitor from "@/assets/icons/monitor.svg";
 import Share2 from "@/assets/icons/share-2.svg";
 import Smartphone from "@/assets/icons/smartphone.svg";
 import SectionHeading from "@/components/ui/SectionHeading.astro";
+import { sizeOf } from "@/data/imageSizes";
 import { type Locale, ui } from "@/i18n/content";
 
 interface Props {
@@ -113,7 +114,7 @@ const work = [
 		<div data-brand-results hidden aria-live="polite" aria-label={copy.resultsLabel} class="grid grid-cols-1 gap-3 pb-12 sm:grid-cols-3 lg:pb-18">
 			{work.map((item) => (
 				<article data-brand-item={item.category} hidden class="group overflow-hidden rounded-3xl bg-cream-100">
-					<img src={item.image} alt={item.title} width="600" height="420" loading="lazy" class="aspect-4/3 w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]" />
+					<img src={item.image} alt={item.title} width={sizeOf(item.image)?.width} height={sizeOf(item.image)?.height} loading="lazy" class="aspect-4/3 w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]" />
 					<h3 class="p-5 font-heading text-xl font-semibold">{item.title}</h3>
 				</article>
 			))}

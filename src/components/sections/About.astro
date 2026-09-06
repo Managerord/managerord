@@ -2,6 +2,7 @@
 import Link2 from "@/assets/icons/link-2.svg";
 import Settings from "@/assets/icons/settings.svg";
 import Sparkle from "@/assets/icons/sparkle.svg";
+import { sizeOf } from "@/data/imageSizes";
 import { type Locale, ui } from "@/i18n/content";
 
 interface Props {
@@ -50,13 +51,13 @@ const galleryImages = [
 				<strong class="text-base lg:text-sm 2xl:text-base">Creator Partner</strong>
 				<span>{copy.partner}</span>
 			</div>
-			<img class="size-16 shrink-0 object-contain sm:size-21 lg:size-17 2xl:size-21" src="/images/logo_m.avif" alt="Managero" width="84" height="84" />
+			<img class="size-16 shrink-0 object-contain sm:size-21 lg:size-17 2xl:size-21" src="/images/logo_m.avif" alt="Managero" width={sizeOf("/images/logo_m.avif")?.width} height={sizeOf("/images/logo_m.avif")?.height} loading="lazy" />
 		</div>
 	</div>
 
 	<div class="grid min-w-0 grid-cols-6 grid-rows-[250px_145px] gap-3.5 lg:grid-rows-[200px_116px] lg:gap-3 2xl:grid-rows-[250px_145px] 2xl:gap-3.5 max-sm:grid-cols-2 max-sm:grid-rows-none max-sm:auto-rows-[140px] max-sm:gap-2" aria-label={copy.gallery}>
 		{galleryImages.map((image, index) => (
-			<img class:list={["size-full rounded-[22px] object-cover object-center max-sm:rounded-[14px]", index < 3 ? "col-span-2 max-sm:col-span-1" : "col-span-3", index === 4 && "max-sm:col-span-2"]} src={image} alt={copy.alts[index]} loading="lazy" />
+			<img class:list={["size-full rounded-[22px] object-cover object-center max-sm:rounded-[14px]", index < 3 ? "col-span-2 max-sm:col-span-1" : "col-span-3", index === 4 && "max-sm:col-span-2"]} src={image} alt={copy.alts[index]} width={sizeOf(image)?.width} height={sizeOf(image)?.height} loading="lazy" />
 		))}
 	</div>
 	</div>

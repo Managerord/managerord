@@ -1,6 +1,7 @@
 ---
 import ArrowLeft from "@/assets/icons/arrow-left.svg";
 import ArrowRight from "@/assets/icons/arrow-right.svg";
+import { sizeOf } from "@/data/imageSizes";
 import type { Project } from "@/data/projects";
 
 interface Props {
@@ -21,20 +22,21 @@ const {
 <div class="mt-8 sm:mt-12 lg:mt-10 2xl:mt-12" data-carousel>
 	<div class="relative overflow-hidden rounded-3xl bg-neutral-100 lg:rounded-[20px] 2xl:rounded-3xl h-150">
 		<div class="flex transition-transform duration-500 ease-out" data-carousel-track>
-			{projects.map((project) => (
-				<div
-					class="aspect-4/5 w-full shrink-0 sm:aspect-video"
-					data-title={project.title}
-					data-category={project.category}
-				>
-					<img
-						src={project.image}
-						alt={project.title}
-						class="h-150 w-full object-cover"
-						loading="lazy"
-					/>
-				</div>
-			))}
+			{projects.map((project) => {
+				const size = sizeOf(project.image);
+				return (
+					<div class="aspect-4/5 w-full shrink-0 sm:aspect-video">
+						<img
+							src={project.image}
+							alt={project.title}
+							width={size?.width}
+							height={size?.height}
+							class="h-150 w-full object-cover"
+							loading="lazy"
+						/>
+					</div>
+				);
+			})}
 		</div>
 
 		<div class="pointer-events-none absolute inset-0 flex items-center justify-between z-20">
@@ -70,19 +72,52 @@ const {
 		</div>
 	</div>
 
-	<div class="mt-4 flex min-w-0 flex-col items-start gap-1 sm:flex-row sm:items-center sm:justify-between">
-		<p class="min-w-0 font-heading text-xl font-semibold break-words sm:text-3xl lg:text-2xl 2xl:text-3xl" data-carousel-title>{projects[0]?.title}</p>
-		<p class="min-w-0 font-heading text-xl text-muted break-words sm:text-3xl lg:text-2xl 2xl:text-3xl" data-carousel-category>{projects[0]?.category}</p>
+	<div class="carousel-captions mt-4" data-carousel-captions>
+		{projects.map((project, index) => (
+			<div
+				class="carousel-caption flex min-w-0 flex-col items-start gap-1 sm:flex-row sm:items-center sm:justify-between"
+				aria-hidden={index === 0 ? "false" : "true"}
+				data-carousel-caption
+			>
+				<p class="min-w-0 font-heading text-xl font-semibold break-words sm:text-3xl lg:text-2xl 2xl:text-3xl">{project.title}</p>
+				<p class="min-w-0 font-heading text-xl text-muted break-words sm:text-3xl lg:text-2xl 2xl:text-3xl">{project.category}</p>
+			</div>
+		))}
 	</div>
 </div>
+
+<style>
+	.carousel-captions {
+		position: relative;
+	}
+
+	.carousel-caption {
+		transition: opacity 300ms ease-out;
+	}
+
+	.carousel-caption:not(:first-child) {
+		position: absolute;
+		inset: 0;
+	}
+
+	.carousel-caption[aria-hidden="true"] {
+		opacity: 0;
+		pointer-events: none;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.carousel-caption {
+			transition: none;
+		}
+	}
+</style>
 
 <script>
 	document.querySelectorAll<HTMLElement>("[data-carousel]").forEach((carousel) => {
 		const track = carousel.querySelector<HTMLElement>("[data-carousel-track]");
 		const slides = Array.from(carousel.querySelectorAll<HTMLElement>("[data-carousel-track] > div"));
 		const dots = Array.from(carousel.querySelectorAll<HTMLButtonElement>("[data-carousel-dot]"));
-		const titleEl = carousel.querySelector<HTMLElement>("[data-carousel-title]");
-		const categoryEl = carousel.querySelector<HTMLElement>("[data-carousel-category]");
+		const captions = Array.from(carousel.querySelectorAll<HTMLElement>("[data-carousel-caption]"));
 
 		if (!track || slides.length === 0) return;
 
@@ -92,8 +127,7 @@ const {
 			index = (nextIndex + slides.length) % slides.length;
 			track.style.transform = `translateX(-${index * 100}%)`;
 			dots.forEach((dot, i) => dot.setAttribute("aria-current", String(i === index)));
-			if (titleEl) titleEl.textContent = slides[index].dataset.title ?? "";
-			if (categoryEl) categoryEl.textContent = slides[index].dataset.category ?? "";
+			captions.forEach((caption, i) => caption.setAttribute("aria-hidden", String(i !== index)));
 		};
 
 		carousel.querySelector("[data-carousel-prev]")?.addEventListener("click", () => goTo(index - 1));
