@@ -8,11 +8,13 @@ import { type Locale, localePath, talkPath, ui } from "@/i18n/content";
 interface Props {
 	locale?: Locale;
 	alternatePath?: string;
+	selfPath?: string;
 }
 
 const {
 	locale = "es",
 	alternatePath = localePath(locale === "es" ? "en" : "es"),
+	selfPath = Astro.url.pathname,
 } = Astro.props;
 const copy = ui[locale].nav;
 const home = localePath(locale);
@@ -20,16 +22,22 @@ const links = copy.links.map((link) => ({
 	...link,
 	href: `${home}#${link.hash}`,
 }));
-const currentPath = Astro.url.pathname;
-const esHref = locale === "es" ? currentPath : alternatePath;
-const enHref = locale === "en" ? currentPath : alternatePath;
+const esHref = locale === "es" ? selfPath : alternatePath;
+const enHref = locale === "en" ? selfPath : alternatePath;
+
+const languages = [
+	{ code: "es" as Locale, short: "ES", name: "Español", href: esHref },
+	{ code: "en" as Locale, short: "EN", name: "English", href: enHref },
+];
+const languageLinkClass =
+	"flex min-h-6 items-center rounded-full px-3 py-1 font-heading text-sm font-semibold transition-colors aria-[current=page]:bg-charcoal aria-[current=page]:text-white";
 ---
 
 <div class="h-[66px] sm:h-[82px] lg:h-[82px] 2xl:h-[98px]" aria-hidden="true"></div>
 <header id="main-header" class="fixed inset-x-0 top-0 z-40 bg-warm-white/80 backdrop-blur">
 	<div class="mx-auto grid w-full grid-cols-[1fr_auto_1fr] items-center px-2 py-2 sm:px-6 sm:py-3 lg:px-16 lg:py-3 2xl:px-20 2xl:py-4">
 		<a href={home} class="justify-self-start" aria-label={copy.backHome}>
-			<Image src="/images/logo.png" alt="Managero" width="1563" height="423" class="h-auto w-[105px] sm:w-[160px] lg:w-[200px] 2xl:w-[250px]" />
+			<Image src="/images/logo.png" alt="Managero" width="1564" height="429" class="h-auto w-[105px] sm:w-[160px] lg:w-[200px] 2xl:w-[250px]" />
 		</a>
 
 		<nav class="hidden items-center gap-6 lg:flex 2xl:gap-8" aria-label={copy.mainLabel}>
@@ -41,14 +49,20 @@ const enHref = locale === "en" ? currentPath : alternatePath;
 		</nav>
 
 		<div class="hidden items-center gap-3 justify-self-end lg:flex">
-			<select
-				aria-label={copy.language}
-				class="cursor-pointer rounded-full border border-border bg-transparent px-3 py-1.5 font-heading text-sm font-semibold text-muted transition-colors hover:text-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-500 2xl:text-base"
-				data-lang-select
-			>
-				<option value={esHref} selected={locale === "es"}>Español</option>
-				<option value={enHref} selected={locale === "en"}>English</option>
-			</select>
+			<nav class="flex items-center gap-0.5 rounded-full border border-border p-0.5" aria-label={copy.language}>
+				{languages.map((language) => (
+					<a
+						href={language.href}
+						hreflang={language.code}
+						lang={language.code}
+						aria-current={locale === language.code ? "page" : undefined}
+						class={`${languageLinkClass} text-muted hover:text-orange-500`}
+					>
+						<span aria-hidden="true">{language.short}</span>
+						<span class="sr-only">{language.name}</span>
+					</a>
+				))}
+			</nav>
 			<Button class="bg-orange-500 px-5 py-2.5 text-base text-white hover:bg-orange-600 2xl:px-6 2xl:py-3 2xl:text-lg" href={talkPath(locale)}>{copy.talk}</Button>
 		</div>
 
@@ -68,7 +82,7 @@ const enHref = locale === "en" ? currentPath : alternatePath;
 <div id="mobile-menu" class="invisible fixed inset-0 z-50 flex min-h-dvh -translate-y-full flex-col overflow-y-auto bg-warm-white p-6 opacity-0 transition-all duration-500 ease-in-out max-[360px]:p-4 lg:hidden" data-mobile-menu>
 	<div class="flex items-center justify-between">
 		<a href={home} aria-label={copy.backHome}>
-			<Image src="/images/logo.png" alt="Managero" width="1563" height="423" class="h-8 w-auto" />
+			<Image src="/images/logo.png" alt="Managero" width="1564" height="429" class="h-8 w-auto" />
 		</a>
 		<button
 			type="button"
@@ -88,14 +102,20 @@ const enHref = locale === "en" ? currentPath : alternatePath;
 		))}
 	</nav>
 
-	<select
-		aria-label={copy.language}
-		class="mt-auto mb-4 cursor-pointer rounded-full border border-border bg-transparent px-3 py-2 text-center font-heading text-base font-semibold text-muted focus:outline-none focus:ring-2 focus:ring-orange-500"
-		data-lang-select
-	>
-		<option value={esHref} selected={locale === "es"}>Español</option>
-		<option value={enHref} selected={locale === "en"}>English</option>
-	</select>
+	<nav class="mt-auto mb-4 flex items-center justify-center gap-1 self-center rounded-full border border-border p-1" aria-label={copy.language}>
+		{languages.map((language) => (
+			<a
+				href={language.href}
+				hreflang={language.code}
+				lang={language.code}
+				aria-current={locale === language.code ? "page" : undefined}
+				class={`${languageLinkClass} min-h-11 px-5 text-base text-muted`}
+			>
+				<span aria-hidden="true">{language.short}</span>
+				<span class="sr-only">{language.name}</span>
+			</a>
+		))}
+	</nav>
 	<Button href={talkPath(locale)} class="w-full">{copy.talk}</Button>
 </div>
 
@@ -111,6 +131,21 @@ const enHref = locale === "en" ? currentPath : alternatePath;
 	.mobile-nav-link--visible {
 		opacity: 1;
 		transform: translateY(0);
+	}
+
+		#main-header {
+		transition: transform 450ms cubic-bezier(0.22, 1, 0.36, 1);
+		will-change: transform;
+	}
+
+	#main-header.is-hidden {
+		transform: translateY(-100%);
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		#main-header {
+			transition: none;
+		}
 	}
 </style>
 
@@ -158,34 +193,36 @@ const enHref = locale === "en" ? currentPath : alternatePath;
 	close?.addEventListener("click", hide);
 	links.forEach((link) => link.addEventListener("click", () => setTimeout(hide, 150)));
 	document.addEventListener("keydown", (event) => event.key === "Escape" && isOpen && hide());
-
-	document.querySelectorAll<HTMLSelectElement>("[data-lang-select]").forEach((select) => {
-		select.addEventListener("change", () => {
-			window.location.href = select.value;
-		});
-	});
 </script>
 
 <script>
-	import { animate, scroll } from "motion";
 
 	const header = document.querySelector<HTMLElement>("#main-header");
-	let lastScrollY = window.scrollY;
-	let isHidden = false;
 
-	if (header && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-		scroll((_progress, info) => {
-			const currentScrollY = info.y.current;
+	if (header) {
+		let lastScrollY = window.scrollY;
+		let isHidden = false;
+		let ticking = false;
+
+		const update = () => {
+			ticking = false;
+			const currentScrollY = window.scrollY;
 			const shouldHide = currentScrollY > lastScrollY && currentScrollY > 80;
-
-			if (shouldHide === isHidden) {
-				lastScrollY = currentScrollY;
-				return;
-			}
-
-			isHidden = shouldHide;
-			animate(header, { y: shouldHide ? "-100%" : "0%" }, { duration: 0.45, ease: [0.22, 1, 0.36, 1] });
 			lastScrollY = currentScrollY;
-		});
+
+			if (shouldHide === isHidden) return;
+			isHidden = shouldHide;
+			header.classList.toggle("is-hidden", shouldHide);
+		};
+
+		window.addEventListener(
+			"scroll",
+			() => {
+				if (ticking) return;
+				ticking = true;
+				requestAnimationFrame(update);
+			},
+			{ passive: true },
+		);
 	}
 </script>
