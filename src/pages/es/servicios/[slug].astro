@@ -1,14 +1,13 @@
 ---
 import ServiceDetail from "@/components/pages/ServiceDetail.astro";
-import { getExtraServices } from "@/data/extraServices";
+import { getAllServices } from "@/data/services";
 
 export function getStaticPaths() {
-	return getExtraServices("es").map((service) => ({
+	return getAllServices("es").map((service) => ({
 		params: { slug: service.slug },
 		props: { service },
 	}));
 }
 const { service } = Astro.props;
-const alternatePath = `/en/services/${service.locales.en.slug}/`;
 ---
-<ServiceDetail locale="es" service={service} alternatePath={alternatePath} />
+<ServiceDetail locale="es" service={service} />

@@ -1,4 +1,6 @@
 ---
+import LocationInfo from "@/components/ui/LocationInfo.astro";
+import { servicesIndexPath } from "@/data/services";
 import { type Locale, localePath, ui } from "@/i18n/content";
 
 interface Props {
@@ -7,18 +9,26 @@ interface Props {
 const { locale = "es" } = Astro.props;
 const copy = ui[locale].nav;
 const home = localePath(locale);
+
+const footerLinks = copy.links.map((link) => ({
+	label: link.label,
+	href:
+		link.hash === "servicios" || link.hash === "services"
+			? servicesIndexPath(locale)
+			: `${home}#${link.hash}`,
+}));
 ---
 
 <footer class="bg-warm-white px-4 sm:px-6 lg:px-8 2xl:px-14">
 	<div class="mx-auto grid w-full max-w-425 grid-cols-[1fr_auto_1fr] items-center pt-2 pb-4.5 max-sm:grid-cols-1 max-sm:justify-items-center max-sm:gap-y-3.5 max-sm:pt-1">
 		<a class="w-fit" href={home} aria-label={copy.backHome}>
-			<img class="size-8.5 object-contain lg:size-7 2xl:size-8.5" src="/images/logo_m.avif" alt="" width="34" height="34" />
+			<img class="size-8.5 object-contain lg:size-7 2xl:size-8.5" src="/images/logo_m.avif" alt="" width="1080" height="1081" />
 		</a>
 
 		<nav class="flex gap-[clamp(18px,3vw,46px)] max-sm:flex-wrap max-sm:justify-center max-sm:gap-x-4 max-sm:gap-y-2" aria-label={copy.footerLabel}>
 			<a class="text-sm text-[#57514b] transition-colors hover:text-orange-500 lg:text-xs 2xl:text-sm" href={home}>{copy.home}</a>
-			{copy.links.map((link) => (
-				<a class="text-sm text-[#57514b] transition-colors hover:text-orange-500 lg:text-xs 2xl:text-sm" href={`${home}#${link.hash}`}>
+			{footerLinks.map((link) => (
+				<a class="text-sm text-[#57514b] transition-colors hover:text-orange-500 lg:text-xs 2xl:text-sm" href={link.href}>
 					{link.label}
 				</a>
 			))}
@@ -26,4 +36,8 @@ const home = localePath(locale);
 
 		<p class="justify-self-end text-sm text-[#57514b] lg:text-xs 2xl:text-sm max-sm:justify-self-center">© Managero RD {new Date().getFullYear()}</p>
 	</div>
+
+	<address class="mx-auto flex w-full max-w-425 flex-wrap items-center justify-center gap-x-5 gap-y-1 border-t border-border pt-3 pb-4 text-xs text-[#57514b] not-italic">
+		<LocationInfo locale={locale} class="transition-colors hover:text-orange-500" iconClass="size-3" />
+	</address>
 </footer>

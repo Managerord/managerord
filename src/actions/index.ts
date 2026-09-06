@@ -5,7 +5,6 @@ import { ui } from "@/i18n/content";
 
 const resend = new Resend(import.meta.env.RESEND_API_KEY);
 
-// Escape HTML to prevent XSS in email templates
 const escapeHtml = (text: string | undefined): string => {
 	if (!text) return "";
 	return text
@@ -30,7 +29,7 @@ export const server = {
 					"branding",
 					"web",
 					"content",
-					"development",
+					"apps",
 					"marketing",
 					"maintenance",
 					"seo",
@@ -90,7 +89,7 @@ export const server = {
                     <div style="max-width: 640px; margin: 0 auto;">
                         <div style="text-align: center; margin-bottom: 20px;">
                             <img
-                                src="https://managerord.com/images/logo.png"
+                                src="https:
                                 alt="Managero"
                                 style="height: 40px; width: auto; border: 0;"
                             />
@@ -195,12 +194,10 @@ export const server = {
 						: "Solicitud enviada correctamente. Nos pondremos en contacto pronto.",
 				};
 			} catch (error) {
-				// If it's already an ActionError, re-throw it
 				if (error instanceof ActionError) {
 					throw error;
 				}
 
-				// Log the error for debugging (in production, use proper logging)
 				console.error("Email sending error:", error);
 
 				throw new ActionError({

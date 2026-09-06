@@ -7,9 +7,9 @@ export const talkPath = (locale: Locale) =>
 export const ui = {
 	es: {
 		seo: {
-			homeTitle: "Agencia de branding, diseño web y desarrollo | Managero",
+			homeTitle: "Agencia de branding, diseño web y apps en RD | Managero",
 			homeDescription:
-				"Creamos marcas, sitios web, aplicaciones y estrategias digitales que convierten ideas en experiencias claras, útiles y memorables.",
+				"Agencia de branding, diseño web y apps. Creamos marcas, sitios web y aplicaciones móviles que convierten ideas en experiencias memorables.",
 		},
 		nav: {
 			links: [
@@ -20,6 +20,7 @@ export const ui = {
 			],
 			talk: "Hablemos",
 			home: "Inicio",
+			services: "Servicios",
 			open: "Abrir menú",
 			close: "Cerrar menú",
 			mainLabel: "Navegación principal",
@@ -29,9 +30,9 @@ export const ui = {
 			language: "Seleccionar idioma",
 		},
 		hero: {
-			title: "Convertimos ideas en experiencias digitales.",
+			title: "Agencia de branding, diseño web y apps",
 			description:
-				"Diseño, estrategia y tecnología para marcas que quieren crecer.",
+				"Convertimos ideas en experiencias digitales con diseño, estrategia y tecnología.",
 			cta: "Iniciar proyecto",
 			alt: "Collage de proyectos y aplicaciones de marca creadas por Managero",
 		},
@@ -84,7 +85,6 @@ export const ui = {
 			titleTop: "Hablemos de",
 			titleBottom: "tu proyecto",
 			description: "Cuéntanos tu idea y juntos la haremos realidad.",
-			location: "Santo Domingo, RD",
 		},
 		form: {
 			name: "Nombre",
@@ -106,7 +106,7 @@ export const ui = {
 				branding: "Identidad visual",
 				web: "Diseño web",
 				content: "Contenido digital",
-				development: "Apps y sistemas",
+				apps: "Apps y sistemas",
 				marketing: "Marketing digital",
 				maintenance: "Mantenimiento web",
 				seo: "SEO y optimización",
@@ -116,9 +116,10 @@ export const ui = {
 		},
 		talk: {
 			eyebrow: "Hablemos",
-			title: "Tu próximo proyecto empieza con una buena conversación.",
+
+			title: "Hablemos de tu proyecto de branding, web o apps",
 			description:
-				"Cuéntanos dónde está tu marca y hacia dónde quieres llevarla. Te responderemos con preguntas claras, ideas concretas y un camino para comenzar.",
+				"Tu próximo proyecto empieza con una buena conversación. Cuéntanos dónde está tu marca y hacia dónde quieres llevarla, y te responderemos con preguntas claras, ideas concretas y un camino para comenzar.",
 			brandsTitle: "Marcas e ideas que ya hemos acompañado",
 			brandsDescription:
 				"Hemos convertido estrategia y creatividad en identidades, productos digitales y piezas que viven en el mundo real.",
@@ -127,17 +128,37 @@ export const ui = {
 				"Mientras más contexto compartas, más útil será nuestra primera conversación.",
 			seoTitle: "Hablemos de tu proyecto | Managero",
 			seoDescription:
-				"Conversemos sobre tu próximo proyecto de branding, diseño web, desarrollo o marketing digital. Completa el formulario de Managero.",
+				"Conversemos sobre tu próximo proyecto de branding, diseño web o apps en Santo Domingo. Completa el formulario de Managero.",
 		},
 		servicePage: {
 			eyebrow: "Servicio",
 			back: "Servicios",
 			helpTitle: "Cómo podemos ayudarte",
 			includedTitle: "Lo que podemos trabajar juntos",
+			detailsTitle: "Cómo lo trabajamos",
+			relatedTitle: "Otros servicios",
+			relatedDescription:
+				"Los servicios se refuerzan entre sí. Estos son los que suelen acompañar a este proyecto.",
+			allServices: "Ver todos los servicios",
 			ctaTitle: "Convirtamos este reto en tu próximo avance.",
 			ctaDescription:
 				"Cuéntanos qué necesitas y diseñaremos una ruta ajustada a tu marca.",
 			cta: "Hablemos de tu proyecto",
+		},
+		servicesIndex: {
+			eyebrow: "Servicios",
+			title: "Servicios de branding, diseño web y apps",
+			description:
+				"Ocho servicios que cubren el ciclo completo de una marca en digital: desde definir quién eres hasta mantener funcionando lo que construimos.",
+			featuredTitle: "Servicios principales",
+			featuredDescription:
+				"El núcleo del trabajo: identidad de marca, sitio web y aplicaciones.",
+			extraTitle: "Servicios complementarios",
+			extraDescription:
+				"Para difundir, sostener y hacer crecer lo que ya está en marcha.",
+			seoTitle: "Servicios de branding, diseño web y apps en RD | Managero",
+			seoDescription:
+				"Branding, diseño web, apps, marketing digital, SEO, diseño gráfico, mantenimiento y consultoría digital en Santo Domingo, República Dominicana.",
 		},
 		notFound: {
 			eyebrow: "Error 404",
@@ -152,9 +173,9 @@ export const ui = {
 	},
 	en: {
 		seo: {
-			homeTitle: "Branding, web design and development agency | Managero",
+			homeTitle: "Branding, web design and apps agency in the DR | Managero",
 			homeDescription:
-				"We create brands, websites, applications and digital strategies that turn ideas into clear, useful and memorable experiences.",
+				"Branding, web design and app development agency in Santo Domingo. We create brands, websites and mobile apps that turn ideas into memorable experiences.",
 		},
 		nav: {
 			links: [
@@ -165,6 +186,7 @@ export const ui = {
 			],
 			talk: "Let's talk",
 			home: "Home",
+			services: "Services",
 			open: "Open menu",
 			close: "Close menu",
 			mainLabel: "Main navigation",
@@ -174,8 +196,9 @@ export const ui = {
 			language: "Select language",
 		},
 		hero: {
-			title: "We turn ideas into digital experiences.",
-			description: "Design, strategy and technology for brands ready to grow.",
+			title: "Branding, web design and apps agency",
+			description:
+				"We turn ideas into digital experiences through design, strategy and technology.",
 			cta: "Start a project",
 			alt: "Collage of brand projects and applications created by Managero",
 		},
@@ -228,7 +251,6 @@ export const ui = {
 			titleTop: "Let's talk about",
 			titleBottom: "your project",
 			description: "Tell us your idea and together we'll make it real.",
-			location: "Santo Domingo, DR",
 		},
 		form: {
 			name: "Name",
@@ -250,7 +272,7 @@ export const ui = {
 				branding: "Visual identity",
 				web: "Web design",
 				content: "Digital content",
-				development: "Apps and systems",
+				apps: "Apps and systems",
 				marketing: "Digital marketing",
 				maintenance: "Web maintenance",
 				seo: "SEO and optimization",
@@ -260,9 +282,10 @@ export const ui = {
 		},
 		talk: {
 			eyebrow: "Let's talk",
-			title: "Your next project starts with a good conversation.",
+
+			title: "Let's talk about your branding, web or app project",
 			description:
-				"Tell us where your brand is and where you want to take it. We'll respond with clear questions, concrete ideas and a path to get started.",
+				"Your next project starts with a good conversation. Tell us where your brand is and where you want to take it, and we'll respond with clear questions, concrete ideas and a path to get started.",
 			brandsTitle: "Brands and ideas we have already supported",
 			brandsDescription:
 				"We have turned strategy and creativity into identities, digital products and pieces that live in the real world.",
@@ -271,17 +294,36 @@ export const ui = {
 				"The more context you share, the more useful our first conversation will be.",
 			seoTitle: "Let's talk about your project | Managero",
 			seoDescription:
-				"Let's discuss your next branding, web design, development or digital marketing project. Complete Managero's project form.",
+				"Let's discuss your next branding, web design or app project in Santo Domingo. Complete Managero's project form.",
 		},
 		servicePage: {
 			eyebrow: "Service",
 			back: "Services",
 			helpTitle: "How we can help",
 			includedTitle: "What we can work on together",
+			detailsTitle: "How we work on it",
+			relatedTitle: "Other services",
+			relatedDescription:
+				"These services reinforce each other. These are the ones that usually accompany this project.",
+			allServices: "See all services",
 			ctaTitle: "Let's turn this challenge into your next step forward.",
 			ctaDescription:
 				"Tell us what you need and we'll design a path around your brand.",
 			cta: "Let's talk about your project",
+		},
+		servicesIndex: {
+			eyebrow: "Services",
+			title: "Branding, web design and app services",
+			description:
+				"Eight services covering a brand's full digital cycle: from defining who you are to keeping what we build running.",
+			featuredTitle: "Core services",
+			featuredDescription:
+				"The heart of the work: brand identity, website and applications.",
+			extraTitle: "Complementary services",
+			extraDescription: "To promote, sustain and grow what is already running.",
+			seoTitle: "Branding, web design and app services in the DR | Managero",
+			seoDescription:
+				"Branding, web design, apps, digital marketing, SEO, graphic design, maintenance and digital consulting in Santo Domingo, Dominican Republic.",
 		},
 		notFound: {
 			eyebrow: "Error 404",

@@ -1,7 +1,7 @@
 ---
 import ExtraServiceCard from "@/components/ui/ExtraServiceCard.astro";
 import SectionHeading from "@/components/ui/SectionHeading.astro";
-import { getExtraServices } from "@/data/extraServices";
+import { getExtraServices } from "@/data/services";
 import { type Locale, ui } from "@/i18n/content";
 
 interface Props {
@@ -21,7 +21,7 @@ const extraServices = getExtraServices(locale);
 
 		<div class="mt-8 grid gap-6 sm:mt-12 lg:mt-10 lg:grid-cols-2 lg:gap-6 2xl:mt-12 2xl:gap-8">
 			{extraServices.map((service) => (
-				<ExtraServiceCard service={service} label={copy.view} />
+				<ExtraServiceCard service={service} />
 			))}
 		</div>
 	</div>

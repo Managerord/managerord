@@ -1,33 +1,35 @@
 ---
-import type { ExtraService } from "@/data/extraServices";
+import { sizeOf } from "@/data/imageSizes";
+import type { LocalizedServiceEntry } from "@/data/services";
 import ArrowButton from "./ArrowButton.astro";
 
 interface Props {
-	service: ExtraService & {
-		title: string;
-		description: string;
-		cardImage: string;
-		href: string;
-	};
-	label?: string;
+	service: LocalizedServiceEntry;
 }
 
-const { service, label = "Conocer el servicio" } = Astro.props;
+const { service } = Astro.props;
+const size = sizeOf(service.cardImage);
 ---
 
-<div class="flex flex-col items-stretch overflow-hidden rounded-3xl bg-cream-100 lg:rounded-[20px] xl:h-60 xl:flex-row 2xl:h-75 2xl:rounded-3xl">
+<a
+	href={service.href}
+	class="group flex flex-col items-stretch overflow-hidden rounded-3xl bg-cream-100 lg:rounded-[20px] xl:h-60 xl:flex-row 2xl:h-75 2xl:rounded-3xl"
+>
 	<div class="aspect-video w-full shrink-0 xl:aspect-auto xl:w-2/5">
 		<img
 			src={service.cardImage}
-			alt={service.title}
+			alt=""
+			width={size?.width}
+			height={size?.height}
+			loading="lazy"
 			class="h-full w-full object-cover" />
 	</div>
 
 	<div class="flex min-w-0 flex-1 flex-col justify-between gap-6 p-5 sm:p-6 lg:gap-5 lg:p-5.5 2xl:gap-6 2xl:p-7">
 		<div>
-			<p class="text-xl font-semibold text-charcoal sm:text-2xl lg:text-xl 2xl:text-2xl">{service.title}</p>
+			<h3 class="font-heading text-xl font-semibold text-charcoal sm:text-2xl lg:text-xl 2xl:text-2xl">{service.title}</h3>
 			<p class="mt-2 text-base leading-relaxed font-normal text-muted sm:text-lg lg:text-base 2xl:text-lg">{service.description}</p>
 		</div>
-		<ArrowButton href={service.href} variant="solid" class="self-end" label={`${label}: ${service.title}`} />
+		<ArrowButton tag="span" variant="solid" class="self-end" />
 	</div>
-</div>
+</a>

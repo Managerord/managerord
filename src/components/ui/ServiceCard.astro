@@ -1,32 +1,37 @@
 ---
-import type { Service } from "@/data/services";
+import { sizeOf } from "@/data/imageSizes";
+import type { LocalizedServiceEntry } from "@/data/services";
 import ArrowButton from "./ArrowButton.astro";
 
 interface Props {
-	service: Service;
-	href?: string;
+	service: LocalizedServiceEntry;
 }
 
-const { service, href = "#" } = Astro.props;
+const { service } = Astro.props;
+const size = sizeOf(service.cardImage);
 ---
 
-<div
-	class="relative flex min-h-[420px] flex-col justify-between overflow-hidden rounded-3xl border border-neutral-200 p-5 sm:min-h-[480px] sm:p-6 lg:rounded-[20px] xl:h-112 xl:min-h-0 2xl:h-140 2xl:rounded-3xl 2xl:p-8"
+<a
+	href={service.href}
+	class="group relative flex min-h-[420px] flex-col justify-between overflow-hidden rounded-3xl border border-neutral-200 p-5 sm:min-h-[480px] sm:p-6 lg:rounded-[20px] xl:h-112 xl:min-h-0 2xl:h-140 2xl:rounded-3xl 2xl:p-8"
 >
 	<img
-		src={service.image}
-		alt={service.title}
+		src={service.cardImage}
+		alt=""
+		width={size?.width}
+		height={size?.height}
+		loading="lazy"
 		class="absolute inset-0 h-full w-full object-cover"
 	/>
 	{service.overlay && <div class="absolute inset-0 bg-linear-to-b from-black/75 via-black/30 to-transparent"></div>}
 
 	<div class="relative z-10 flex flex-col">
-		<p class:list={["mt-4 text-2xl font-semibold sm:text-3xl xl:mt-3 xl:text-2xl 2xl:mt-4 2xl:text-3xl", service.class]}>
+		<h3 class:list={["mt-4 font-heading text-2xl font-semibold sm:text-3xl xl:mt-3 xl:text-2xl 2xl:mt-4 2xl:text-3xl", service.class]}>
 			{service.title}
-		</p>
+		</h3>
 		<p class:list={["mt-5 text-base font-normal sm:mt-8 sm:text-lg lg:mt-6 lg:text-base 2xl:mt-8 2xl:text-xl", service.class]}>
 			{service.description}
 		</p>
 	</div>
-	<ArrowButton href={href} class="mt-8 self-end" label={service.title} />
-</div>
+	<ArrowButton tag="span" class="relative z-10 mt-8 self-end" />
+</a>

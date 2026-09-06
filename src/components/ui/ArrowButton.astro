@@ -6,6 +6,7 @@ interface Props {
 	class?: string;
 	label?: string;
 	variant?: "outline" | "solid";
+	tag?: "a" | "span";
 }
 
 const {
@@ -13,19 +14,27 @@ const {
 	class: className = "",
 	label = "Ver más",
 	variant = "outline",
+	tag = "a",
 } = Astro.props;
 
 const variants = {
 	outline:
-		"border border-neutral-300 text-charcoal hover:bg-neutral-900 hover:text-white",
-	solid: "bg-orange-500 text-white hover:bg-orange-600",
+		"border border-neutral-300 text-charcoal group-hover:bg-neutral-900 group-hover:text-white hover:bg-neutral-900 hover:text-white",
+	solid:
+		"bg-orange-500 text-white group-hover:bg-orange-600 hover:bg-orange-600",
 };
+
+const classes = `inline-flex size-12 shrink-0 items-center justify-center rounded-full transition-colors lg:size-10 2xl:size-12 ${variants[variant]} ${className}`;
 ---
 
-<a
-	href={href}
-	aria-label={label}
-	class={`inline-flex size-12 shrink-0 items-center justify-center rounded-full transition-colors lg:size-10 2xl:size-12 ${variants[variant]} ${className}`}
->
-	<ArrowUpRight class="size-4 2xl:size-[18px]" />
-</a>
+{
+	tag === "a" ? (
+		<a href={href} aria-label={label} class={classes}>
+			<ArrowUpRight class="size-4 2xl:size-[18px]" />
+		</a>
+	) : (
+		<span aria-hidden="true" class={classes}>
+			<ArrowUpRight class="size-4 2xl:size-[18px]" />
+		</span>
+	)
+}
