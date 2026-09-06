@@ -1,0 +1,27 @@
+---
+import MapPin from "@/assets/icons/map-pin.svg";
+import Phone from "@/assets/icons/phone.svg";
+import { primaryLocation } from "@/data/locations";
+import type { Locale } from "@/i18n/content";
+
+interface Props {
+	locale?: Locale;
+	class?: string;
+	iconClass?: string;
+}
+
+const {
+	locale = "es",
+	class: className = "",
+	iconClass = "size-3.5",
+} = Astro.props;
+---
+
+<a class={`inline-flex w-fit items-center gap-1.75 ${className}`} href={`tel:${primaryLocation.phone.href}`} data-contact-phone>
+	<Phone class={iconClass} aria-hidden="true" />
+	<span data-contact-phone-text>{primaryLocation.phone.display}</span>
+</a>
+<span class={`inline-flex w-fit items-center gap-1.75 ${className}`}>
+	<MapPin class={iconClass} aria-hidden="true" />
+	<span data-contact-address-text>{primaryLocation.label[locale]}</span>
+</span>

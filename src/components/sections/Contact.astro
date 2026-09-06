@@ -1,8 +1,7 @@
 ---
 import Mail from "@/assets/icons/mail.svg";
-import MapPin from "@/assets/icons/map-pin.svg";
-import Phone from "@/assets/icons/phone.svg";
 import ContactForm from "@/components/ui/ContactForm.astro";
+import LocationInfo from "@/components/ui/LocationInfo.astro";
 import SocialLinks from "@/components/ui/SocialLinks.astro";
 import { type Locale, ui } from "@/i18n/content";
 
@@ -27,14 +26,7 @@ const copy = ui[locale].contact;
 				<Mail class="size-3.5 lg:size-2.75 2xl:size-3.5" aria-hidden="true" />
 				marias@managerord.com
 			</a>
-			<a class="inline-flex w-fit items-center gap-1.75" href="tel:+18097191911">
-				<Phone class="size-3.5 lg:size-2.75 2xl:size-3.5" aria-hidden="true" />
-				(809) 719-1911
-			</a>
-			<span class="inline-flex w-fit items-center gap-1.75">
-				<MapPin class="size-3.5 lg:size-2.75 2xl:size-3.5" aria-hidden="true" />
-				{copy.location}
-			</span>
+			<LocationInfo locale={locale} iconClass="size-3.5 lg:size-2.75 2xl:size-3.5" />
 		</address>
 		<SocialLinks class="mt-2.5 2xl:mt-3.25" />
 	</div>
