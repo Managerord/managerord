@@ -1,6 +1,7 @@
 ---
 import ArrowRight from "@/assets/icons/arrow-right.svg";
 import Button from "@/components/ui/Button.astro";
+import { heroImage } from "@/data/heroImage";
 import { type Locale, talkPath, ui } from "@/i18n/content";
 
 interface Props {
@@ -12,17 +13,18 @@ const copy = ui[locale].hero;
 
 <section class="overflow-hidden bg-warm-white px-2 sm:px-6 lg:px-8 2xl:px-14">
 	<div
-		class="relative mx-auto h-[360px] max-w-425 overflow-hidden rounded-2xl bg-cream-100 sm:h-[520px] sm:rounded-3xl lg:h-140 2xl:h-175 2xl:rounded-4xl"
+		class="relative mx-auto h-90 max-w-425 overflow-hidden rounded-2xl bg-cream-100 sm:h-130 sm:rounded-3xl lg:h-140 2xl:h-175 2xl:rounded-4xl"
 	>
 		<img
-			src="/images/01-hero-managero.avif"
+			src={heroImage.src}
+			srcset={heroImage.srcset}
+			sizes={heroImage.sizes}
 			alt={copy.alt}
-			width="1672"
-			height="941"
+			width={heroImage.width}
+			height={heroImage.height}
 			class="absolute inset-0 h-full w-full object-cover object-[62%_center] sm:object-center"
 			loading="eager"
 			fetchpriority="high"
-			decoding="async"
 		/>
 		<div
 			class="absolute inset-0 bg-linear-to-r from-cream-100 via-cream-100/85 to-cream-100/10 sm:via-cream-100/75"
@@ -30,13 +32,13 @@ const copy = ui[locale].hero;
 		</div>
 
 		<div
-			class="relative z-10 flex h-full max-w-[88%] flex-col justify-center p-5 text-left sm:max-w-lg sm:p-10 lg:max-w-102.5 lg:p-11 2xl:max-w-lg 2xl:p-14">
+			class="relative z-10 flex h-full max-w-[88%] flex-col justify-center p-5 text-left sm:max-w-lg sm:p-10 lg:max-w-120 lg:p-11 2xl:max-w-lg 2xl:p-14">
 			<h1
 				class="font-heading text-[clamp(1.75rem,8vw,2.25rem)] font-extrabold leading-[1.02] tracking-[-0.02em] text-black/80 sm:text-6xl lg:text-[4.8rem] 2xl:text-7xl"
 			>
 				{copy.title}
 			</h1>
-			<p class="mt-4 max-w-[260px] text-sm leading-[1.4] font-normal text-muted sm:mt-6 sm:max-w-md sm:text-xl lg:mt-5 lg:max-w-sm 2xl:mt-6 2xl:max-w-md 2xl:text-2xl">
+			<p class="mt-4 max-w-65 text-sm leading-[1.4] font-normal text-muted sm:mt-6 sm:max-w-md sm:text-xl lg:mt-5 lg:max-w-sm 2xl:mt-6 2xl:max-w-md 2xl:text-2xl">
 				{copy.description}
 			</p>
 			<div class="mt-4 flex flex-col gap-4 sm:mt-8 sm:flex-row lg:mt-6 2xl:mt-8">

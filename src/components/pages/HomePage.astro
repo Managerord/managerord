@@ -9,6 +9,7 @@ import Hero from "@/components/sections/Hero.astro";
 import Process from "@/components/sections/Process.astro";
 import Projects from "@/components/sections/Projects.astro";
 import Services from "@/components/sections/Services.astro";
+import { heroImage } from "@/data/heroImage";
 import { type Locale, localePath, ui } from "@/i18n/content";
 import Layout from "@/layouts/Layout.astro";
 
@@ -26,6 +27,7 @@ const alternateLocale = locale === "es" ? "en" : "es";
 	description={copy.seo.homeDescription}
 	canonicalPath={localePath(locale)}
 	alternatePath={localePath(alternateLocale)}
+	preloadImage={{ href: heroImage.src, srcset: heroImage.srcset, sizes: heroImage.sizes }}
 >
 	<Navbar locale={locale} alternatePath={localePath(alternateLocale)} />
 	<main>

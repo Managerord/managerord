@@ -4,6 +4,10 @@ export interface ImageSize {
 }
 
 export const imageSizes: Record<string, ImageSize> = {
+	"/images/01-hero-managero-1024.avif": { width: 1024, height: 576 },
+	"/images/01-hero-managero-1440.avif": { width: 1440, height: 810 },
+	"/images/01-hero-managero-640.avif": { width: 640, height: 360 },
+	"/images/01-hero-managero-800.avif": { width: 800, height: 450 },
 	"/images/01-hero-managero.avif": { width: 1672, height: 941 },
 	"/images/02-identidad-visual.avif": { width: 1122, height: 1402 },
 	"/images/03-diseno-web.avif": { width: 1003, height: 1568 },
@@ -18,6 +22,7 @@ export const imageSizes: Record<string, ImageSize> = {
 	"/images/12-mosaico-papeleria.avif": { width: 1000, height: 1000 },
 	"/images/13-mosaico-libreta.avif": { width: 1000, height: 1000 },
 	"/images/14-mosaico-redes.avif": { width: 1000, height: 1000 },
+	"/images/logo-500.png": { width: 500, height: 137 },
 	"/images/logo.png": { width: 1564, height: 429 },
 	"/images/logo_m.avif": { width: 1080, height: 1081 },
 	"/images/mockups/bolsas_y_gorra_marcas.avif": { width: 2304, height: 2560 },

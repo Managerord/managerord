@@ -11,6 +11,7 @@
     "preview": "astro preview",
     "astro": "astro",
     "gen:image-sizes": "node scripts/gen-image-sizes.mjs && biome format --write src/data/imageSizes.ts",
+    "gen:critical-images": "node scripts/gen-critical-images.mjs",
     "lint": "biome lint ./src",
     "lint:fix": "biome lint --write ./src",
     "lint:format": "biome format --write ./src",

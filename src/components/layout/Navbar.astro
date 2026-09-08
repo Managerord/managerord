@@ -1,5 +1,4 @@
 ---
-import { Image } from "astro:assets";
 import Menu from "@/assets/icons/menu.svg";
 import X from "@/assets/icons/x.svg";
 import Button from "@/components/ui/Button.astro";
@@ -37,7 +36,7 @@ const languageLinkClass =
 <header id="main-header" class="fixed inset-x-0 top-0 z-40 bg-warm-white/80 backdrop-blur">
 	<div class="mx-auto grid w-full grid-cols-[1fr_auto_1fr] items-center px-2 py-2 sm:px-6 sm:py-3 lg:px-16 lg:py-3 2xl:px-20 2xl:py-4">
 		<a href={home} class="justify-self-start" aria-label={copy.backHome}>
-			<Image src="/images/logo.png" alt="Managero" width="1564" height="429" class="h-auto w-[105px] sm:w-[160px] lg:w-[200px] 2xl:w-[250px]" />
+			<img src="/images/logo-500.png" alt="Managero" width="500" height="137" loading="eager" class="h-auto w-[105px] sm:w-[160px] lg:w-[200px] 2xl:w-[250px]" />
 		</a>
 
 		<nav class="hidden items-center gap-6 lg:flex 2xl:gap-8" aria-label={copy.mainLabel}>
@@ -82,7 +81,7 @@ const languageLinkClass =
 <div id="mobile-menu" class="invisible fixed inset-0 z-50 flex min-h-dvh -translate-y-full flex-col overflow-y-auto bg-warm-white p-6 opacity-0 transition-all duration-500 ease-in-out max-[360px]:p-4 lg:hidden" data-mobile-menu>
 	<div class="flex items-center justify-between">
 		<a href={home} aria-label={copy.backHome}>
-			<Image src="/images/logo.png" alt="Managero" width="1564" height="429" class="h-8 w-auto" />
+			<img src="/images/logo-500.png" alt="Managero" width="500" height="137" loading="lazy" class="h-8 w-auto" />
 		</a>
 		<button
 			type="button"

@@ -18,6 +18,7 @@ interface Props {
 	imageAlt?: string;
 	noindex?: boolean;
 	schema?: Record<string, unknown> | Record<string, unknown>[];
+	preloadImage?: { href: string; srcset?: string; sizes?: string };
 }
 
 const {
@@ -30,6 +31,7 @@ const {
 	imageAlt,
 	noindex = false,
 	schema,
+	preloadImage,
 } = Astro.props;
 const canonical = new URL(canonicalPath, Astro.site);
 const alternateLocale = locale === "es" ? "en" : "es";
@@ -75,6 +77,16 @@ const usContact = {
 		<title>{title}</title>
 		<script is:inline type="application/ld+json" set:html={JSON.stringify(organizationSchema)} />
 		{schema && <script is:inline type="application/ld+json" set:html={JSON.stringify(schema)} />}
+		{preloadImage && (
+			<link
+				rel="preload"
+				as="image"
+				href={preloadImage.href}
+				imagesrcset={preloadImage.srcset}
+				imagesizes={preloadImage.sizes}
+				fetchpriority="high"
+			/>
+		)}
 		<link
 			rel="preload"
 			href="/fonts/nunito-v32-latin-regular.woff2"
@@ -85,13 +97,6 @@ const usContact = {
 		<link
 			rel="preload"
 			href="/fonts/nordeco-bold.woff2"
-			as="font"
-			type="font/woff2"
-			crossorigin
-		/>
-		<link
-			rel="preload"
-			href="/fonts/nordeco-regular.woff2"
 			as="font"
 			type="font/woff2"
 			crossorigin
@@ -153,14 +158,37 @@ const usContact = {
 </style>
 
 <script>
-	import Lenis from "lenis";
+	const wanted =
+		!window.matchMedia("(prefers-reduced-motion: reduce)").matches &&
+		window.matchMedia("(hover: hover) and (pointer: fine)").matches;
 
-	if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+	const start = async () => {
+		const { default: Lenis } = await import("lenis");
 		const lenis = new Lenis({ duration: 1.8, smoothWheel: true });
 		const frame = (time: number) => {
 			lenis.raf(time);
 			requestAnimationFrame(frame);
 		};
 		requestAnimationFrame(frame);
+	};
+
+	if (wanted) {
+		const scheduleStart = () => {
+			requestAnimationFrame(() => {
+				setTimeout(() => {
+					if (typeof requestIdleCallback === "function") {
+						requestIdleCallback(start, { timeout: 2000 });
+					} else {
+						void start();
+					}
+				}, 200);
+			});
+		};
+
+		if (document.readyState === "complete") {
+			scheduleStart();
+		} else {
+			window.addEventListener("load", scheduleStart, { once: true });
+		}
 	}
 </script>
