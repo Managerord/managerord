@@ -102,6 +102,7 @@ export const ui = {
 				"Cuéntanos qué tienes en mente y lo construimos juntos...",
 			submit: "Enviar solicitud",
 			error: "Ocurrió un error. Inténtalo de nuevo.",
+			verification: "Completa la verificación de seguridad.",
 			services: {
 				branding: "Identidad visual",
 				web: "Diseño web",
@@ -268,6 +269,7 @@ export const ui = {
 				"Tell us what you have in mind and we'll build it together...",
 			submit: "Send request",
 			error: "Something went wrong. Please try again.",
+			verification: "Please complete the security verification.",
 			services: {
 				branding: "Visual identity",
 				web: "Web design",

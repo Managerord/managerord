@@ -43,9 +43,10 @@ export const server = {
 			budget: z.string().max(40).optional(),
 			timeline: z.string().max(120).optional(),
 			message: z.string().min(1, "El mensaje es requerido"),
+			"cf-turnstile-response": z.string().min(1, "Verificación requerida"),
 		}),
 
-		handler: async (input) => {
+		handler: async (input, context) => {
 			const {
 				locale,
 				name,
@@ -56,15 +57,41 @@ export const server = {
 				budget,
 				timeline,
 				message,
+				"cf-turnstile-response": turnstileToken,
 			} = input;
 			const isEnglish = locale === "en";
 			const publicError = isEnglish
 				? "We couldn't send your request. Please try again."
 				: "No pudimos enviar tu solicitud. Inténtalo de nuevo.";
 
-			if (!import.meta.env.RESEND_API_KEY) {
+			const turnstileSecret = import.meta.env.TURNSTILE_SECRET_KEY;
+
+			if (!import.meta.env.RESEND_API_KEY || !turnstileSecret) {
 				throw new ActionError({
 					code: "INTERNAL_SERVER_ERROR",
+					message: publicError,
+				});
+			}
+
+			const verifyBody = new URLSearchParams({
+				secret: turnstileSecret,
+				response: turnstileToken,
+			});
+			try {
+				verifyBody.set("remoteip", context.clientAddress);
+			} catch {
+				// clientAddress unavailable in this runtime; siteverify works without it
+			}
+
+			const verifyResponse = await fetch(
+				"https://challenges.cloudflare.com/turnstile/v0/siteverify",
+				{ method: "POST", body: verifyBody },
+			);
+			const verifyResult = (await verifyResponse.json()) as { success: boolean };
+
+			if (!verifyResult.success) {
+				throw new ActionError({
+					code: "BAD_REQUEST",
 					message: publicError,
 				});
 			}
