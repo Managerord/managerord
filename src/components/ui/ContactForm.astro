@@ -11,6 +11,7 @@ interface Props {
 
 const { locale = "es", detailed = false, selectedService = "" } = Astro.props;
 const copy = ui[locale].form;
+const turnstileSiteKey = import.meta.env.TURNSTILE_SITE_KEY;
 const inputClass =
 	"w-full rounded-md border border-[#eee9e2] bg-white px-3 py-2.5 text-base text-[#332f2b] outline-none transition-colors placeholder:text-[#aaa39c] focus:border-orange-500 sm:text-sm lg:px-2.5 lg:py-2 lg:text-xs 2xl:px-3 2xl:py-2.5 2xl:text-sm";
 ---
@@ -21,6 +22,7 @@ const inputClass =
 	method="POST"
 	action={actions.send}
 	data-error={copy.error}
+	data-verification={copy.verification}
 >
 	<input type="hidden" name="locale" value={locale} />
 	<div class="grid grid-cols-2 gap-3.5 lg:gap-3 2xl:gap-3.5 max-[520px]:grid-cols-1">
@@ -95,6 +97,9 @@ const inputClass =
 			placeholder={copy.messagePlaceholder}
 		></textarea>
 	</div>
+	{turnstileSiteKey && (
+		<div class="cf-turnstile" data-sitekey={turnstileSiteKey} data-theme="light"></div>
+	)}
 	<p
 		id="contact-form-status"
 		class="text-sm font-medium lg:text-xs 2xl:text-sm"
@@ -112,12 +117,23 @@ const inputClass =
 	</button>
 </form>
 
+{turnstileSiteKey && (
+	<script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+)}
+
 <script>
 	import { actions } from "astro:actions";
+
+	declare global {
+		interface Window {
+			turnstile?: { reset: (widget?: string | HTMLElement) => void };
+		}
+	}
 
 	const form = document.querySelector<HTMLFormElement>("#contact-form");
 	const status = document.querySelector<HTMLParagraphElement>("#contact-form-status");
 	const submitButton = form?.querySelector<HTMLButtonElement>('button[type="submit"]');
+	const turnstileWidget = form?.querySelector<HTMLElement>(".cf-turnstile");
 	const serviceSelect = form?.querySelector<HTMLSelectElement>("#service");
 	const requestedService = new URLSearchParams(window.location.search).get("service");
 	if (
@@ -132,13 +148,24 @@ const inputClass =
 		event.preventDefault();
 		if (!status || !submitButton) return;
 
+		const formData = new FormData(form);
+
+		if (turnstileWidget && !formData.get("cf-turnstile-response")) {
+			status.hidden = false;
+			status.textContent = form.dataset.verification || form.dataset.error || "";
+			status.classList.remove("text-green-600");
+			status.classList.add("text-red-600");
+			return;
+		}
+
 		submitButton.disabled = true;
 		status.hidden = true;
 
-		const { data, error } = await actions.send(new FormData(form));
+		const { data, error } = await actions.send(formData);
 
 		submitButton.disabled = false;
 		status.hidden = false;
+		window.turnstile?.reset(turnstileWidget ?? undefined);
 
 		if (error) {
 			status.textContent = error.message || form.dataset.error || "Something went wrong.";
