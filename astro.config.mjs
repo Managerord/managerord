@@ -1,12 +1,10 @@
-import { defineConfig } from "astro/config";
-
 import sitemap from "@astrojs/sitemap";
 import vercel from "@astrojs/vercel";
 import tailwindcss from "@tailwindcss/vite";
+import { defineConfig } from "astro/config";
 
 import { getAllServices, servicesIndexPath } from "./src/data/services.ts";
-
-const SITE = "https://managerord.com";
+import { SITE } from "./src/data/site.ts";
 
 const abs = (path) => new URL(path, SITE).href;
 
@@ -41,6 +39,7 @@ const alternates = localeAlternates();
 
 export default defineConfig({
 	site: SITE,
+	trailingSlash: "always",
 	adapter: vercel(),
 	integrations: [
 		sitemap({

@@ -4,10 +4,11 @@ import {
 	locationList,
 	primaryLocation,
 } from "@/data/locations";
+import { SITE } from "@/data/site";
 
-export const ORGANIZATION_ID = "https://managerord.com/#organization";
+export const ORGANIZATION_ID = `${SITE}/#organization`;
 
-export const ORGANIZATION_URL = "https://managerord.com/es/";
+export const ORGANIZATION_URL = `${SITE}/es/`;
 
 const compact = <T extends Record<string, unknown>>(input: T) =>
 	Object.fromEntries(
@@ -27,7 +28,7 @@ const postalAddress = (location: BusinessLocation) =>
 const officeSchema = locationList.map((location) =>
 	compact({
 		"@type": "Place",
-		"@id": `https://managerord.com/#office-${location.id}`,
+		"@id": `${SITE}/#office-${location.id}`,
 		name: `${business.name} — ${location.address.addressLocality}`,
 		address: postalAddress(location),
 		telephone: location.phone.schema,
@@ -41,8 +42,8 @@ export const organizationSchema = compact({
 	name: business.name,
 	alternateName: "Managero RD",
 	url: ORGANIZATION_URL,
-	logo: "https://managerord.com/images/logo.png",
-	image: "https://managerord.com/images/og/default.jpg",
+	logo: `${SITE}/images/logo.png`,
+	image: `${SITE}/images/og/default.jpg`,
 	email: business.email,
 
 	telephone: primaryLocation.phone.schema,
